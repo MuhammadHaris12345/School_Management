@@ -1,848 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduManage Pakistan — Full Demo Flow | School Management System</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Noto+Nastaliq+Urdu:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    * { font-family: 'Inter', 'Noto Nastaliq Urdu', sans-serif; }
-    body { transition: background-color 0.2s, color 0.2s; }
-    .urdu { font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; }
-    .sidebar-item { transition: all 0.15s ease; border-radius: 0.75rem; }
-    .sidebar-item:hover { background: rgba(16, 185, 129, 0.08); }
-    .sidebar-item.active { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16,185,129,0.25); }
-    .sidebar-item.active i { color: white; }
-    .card-shadow { box-shadow: 0 8px 24px rgba(0, 20, 10, 0.04), 0 2px 6px rgba(0,0,0,0.02); }
-    .dark body { background-color: #0b1a1a; }
-    .dark .bg-white, .dark .card-shadow { background-color: #132222 !important; color: #e2f0e8; }
-    .dark .text-gray-800, .dark .text-gray-700 { color: #d1e6dd; }
-    .dark .border-gray-200 { border-color: #2a3e3a; }
-    .dark .bg-gray-50 { background-color: #0f1f1f; }
-    .dark .hover\:bg-gray-100:hover { background-color: #1e2f2f; }
-    .fade-in { animation: fadeIn 0.2s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0.3; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-    .toast { animation: slideUp 0.2s ease; }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    @media print {
-      .no-print { display: none !important; }
-      .print-invoice { box-shadow: none; border: 1px solid #ccc; }
-      body { background: white; }
-    }
-    .step-badge { background: linear-gradient(135deg, #10b981, #059669); }
-    .flow-highlight { border-left: 4px solid #10b981; background: #f0fdf4; }
-    .dark .flow-highlight { background: #132222; border-left-color: #34d399; }
-  </style>
-</head>
-<body class="bg-gradient-to-br from-emerald-50/60 via-white to-blue-50/40 text-gray-800 dark:bg-[#0b1a1a] dark:text-gray-200 min-h-screen antialiased">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EduPak – School Management System</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:'class'}</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<style type="text/tailwindcss">
+.card{@apply bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-5 border border-slate-100 dark:border-slate-700}
+.btn{@apply px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition shadow-sm}
+.btn2{@apply px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-sm hover:bg-emerald-100 dark:hover:bg-slate-600 transition}
+.inp{@apply w-full border border-slate-200 rounded-xl px-3 py-2 text-sm bg-transparent dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-400 mt-1}
+th{@apply text-left text-xs font-semibold text-slate-500 p-2 whitespace-nowrap}
+td{@apply p-2 border-t border-slate-100 dark:border-slate-700 text-sm}
+.nav{@apply flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-emerald-50 hover:bg-white/10 cursor-pointer transition}
+.nav.on{@apply bg-white text-emerald-800 font-semibold shadow}
+</style>
+<style>
+body{font-family:Poppins,sans-serif}.urdu{font-family:'Noto Nastaliq Urdu',serif;font-weight:400}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.fade{animation:fi .35s}
+option{color:#111}
+@media print{body *{visibility:hidden}#print,#print *{visibility:visible}#print{position:absolute;left:0;top:0;width:100%}
+#modal>div{position:static!important;overflow:visible!important;display:block!important;background:none!important;padding:0!important}.no-print{display:none!important}@page{margin:10mm}}
+</style></head>
+<body class="bg-gradient-to-br from-emerald-50 via-white to-sky-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900 text-slate-700 dark:text-slate-200 min-h-screen">
+<aside id="sb" class="fixed inset-y-0 left-0 w-64 bg-gradient-to-b from-emerald-700 via-emerald-800 to-teal-900 z-40 -translate-x-full lg:translate-x-0 transition flex flex-col p-4 overflow-auto">
+ <div class="flex items-center gap-3 px-2 py-4 mb-2">
+  <div class="w-12 h-12 rounded-2xl bg-white/90 text-emerald-700 flex items-center justify-center text-2xl"><i class="fa fa-graduation-cap"></i></div>
+  <div class="text-white"><div id="sname" class="font-bold leading-tight text-sm"></div><div class="text-[11px] text-emerald-200">Logo Placeholder • EduPak</div></div></div>
+ <nav id="nav" class="space-y-1 flex-1"></nav>
+ <div class="text-[11px] text-emerald-200 text-center pt-3">100% Paperless School • <span class="urdu">کاغذ سے پاک</span></div>
+</aside>
+<div class="lg:ml-64">
+ <header class="sticky top-0 z-30 backdrop-blur bg-white/80 dark:bg-slate-900/80 border-b border-slate-100 dark:border-slate-700 px-4 py-3 flex items-center justify-between no-print">
+  <button class="lg:hidden btn2" onclick="sbt()"><i class="fa fa-bars"></i></button>
+  <div class="text-sm text-slate-500 hidden sm:block"><i class="fa fa-calendar-day text-emerald-600"></i> <span id="dt"></span></div>
+  <div class="flex gap-2 items-center"><button class="btn2" onclick="go('demo')"><i class="fa fa-circle-play text-emerald-600"></i> Demo Guide</button>
+  <button class="btn2" onclick="dark()"><i class="fa fa-moon"></i></button></div></header>
+ <main id="main" class="p-4 lg:p-8 fade"></main>
+</div>
+<div id="modal"></div><div id="toasts" class="fixed top-4 right-4 z-[60]"></div>
+<script>
+const SUB=['Urdu','English','Math','Science','Islamiat'],CATS=['Fees','Admission','Donation','Salaries','Utilities','Rent','Maintenance','Marketing','Stationery','Other'];
+const NAV=[['dash','fa-gauge-high','Dashboard','ڈیش بورڈ'],['students','fa-user-graduate','Students','طلباء'],['staff','fa-chalkboard-user','Staff','اسٹاف'],['att','fa-clipboard-user','Attendance','حاضری'],['fees','fa-file-invoice-dollar','Fees & Vouchers','فیس'],['exams','fa-pen-to-square','Exams & Marks','امتحانات'],['acc','fa-wallet','Accounts','حساب کتاب'],['classes','fa-school','Classes','کلاسز'],['mkt','fa-bullhorn','Marketing Toolkit','مارکیٹنگ'],['demo','fa-circle-play','Demo Guide','ڈیمو']];
+const LIB=[['🔬','Science Fair','سائنس فیئر'],['🇵🇰','Independence Day (14 August)','یومِ آزادی'],['🏆','Sports Day','سپورٹس ڈے'],['📢','New Admissions Open','داخلے جاری'],['🎓','Result Day','رزلٹ ڈے'],['👨‍👩‍👧','Parent-Teacher Meeting','پیرنٹ ٹیچر میٹنگ'],['🎭','Annual Function','سالانہ تقریب'],['🌙','Eid Celebration','عید تقریب'],['🥇','Position Holders Honoured','پوزیشن ہولڈرز'],['🎨','Art & Calligraphy Competition','آرٹ مقابلہ'],['📖','Quran Recitation / Naat Competition','نعت و قرأت'],['🎁','Free Trial Class Week','مفت ٹرائل کلاس']];
+let D,ui={},page='dash',OUT=[];const K='edupak_v1',P={};
+const $=i=>document.getElementById(i),save=()=>localStorage.setItem(K,JSON.stringify(D));
+const ds=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10),today=()=>ds(new Date()),curM=()=>today().slice(0,7);
+const addM=(m,n)=>{let[y,o]=m.split('-').map(Number);o+=n;while(o<1){o+=12;y--}while(o>12){o-=12;y++}return y+'-'+String(o).padStart(2,'0')};
+const mL=m=>new Date(m+'-01').toLocaleString('en',{month:'long',year:'numeric'}),uid=()=>Math.random().toString(36).slice(2,8);
+const PKR=n=>'Rs '+Math.round(+n||0).toLocaleString('en-US'),sum=a=>a.reduce((x,y)=>x+(typeof y=='number'?y:+y.amt||0),0);
+const E=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';'),stu=id=>D.students.find(s=>s.id==id);
+const vPaid=v=>sum(D.pays.filter(p=>p.vid==v.id)),vBal=v=>v.amt-vPaid(v),vst=v=>vBal(v)<=0?'Paid':vPaid(v)>0?'Partial':'Due';
+const fst=id=>{const v=D.vouch.find(v=>v.sid==id&&v.month==curM());return v?vst(v):'No Voucher'};
+const bd=t=>{const c={Paid:'emerald',Partial:'amber',Due:'rose','No Voucher':'slate',Income:'emerald',Expense:'rose',P:'emerald',A:'rose',L:'amber'}[t]||'sky';return`<span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-${c}-100 text-${c}-700">${t}</span>`};
+const empty=(t,m)=>`<div class="text-center py-10 text-slate-400"><i class="fa fa-folder-open text-4xl mb-2"></i><div class="font-semibold">${t}</div><div class="text-sm">${m}</div></div>`;
+const head=(t,u,b)=>`<div class="flex items-center justify-between flex-wrap gap-3 mb-5"><h1 class="text-2xl font-bold">${t} <span class="urdu text-emerald-600 text-lg">${u}</span></h1><div class="flex gap-2 flex-wrap">${b||''}</div></div>`;
+const grade=p=>p>=90?'A+':p>=80?'A':p>=70?'B':p>=60?'C':p>=50?'D':'F';
+const log=m=>{D.log.unshift({t:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),d:today(),m});D.log.length=Math.min(D.log.length,30)};
+const attPct=(id,k)=>{const x=Object.values(D[k]).filter(d=>d[id]);return x.length?Math.round(x.filter(d=>d[id]!='A').length*100/x.length):'—'};
+function toast(m,t){const d=document.createElement('div');d.className='px-4 py-3 rounded-xl text-white text-sm shadow-lg mb-2 fade '+(t=='err'?'bg-rose-600':'bg-emerald-600');d.innerHTML=m;$('toasts').appendChild(d);setTimeout(()=>d.remove(),3000)}
+function modal(h,f,w){$('modal').innerHTML=`<div class="fixed inset-0 bg-black/50 z-50 flex items-start justify-center p-4 overflow-auto" onclick="if(event.target==this)closeModal()"><${f?'form id="mf"':'div'} class="card ${w||'max-w-lg'} w-full my-8 fade">${h}</${f?'form':'div'}></div>`}
+const closeModal=()=>$('modal').innerHTML='';
+function form(t,f,v,cb){v=v||{};modal(`<h3 class="text-lg font-bold mb-3">${t}</h3><div class="grid grid-cols-2 gap-3">${f.map(([k,l,ty,o])=>`<label class="text-xs font-semibold ${ty=='wide'?'col-span-2':''}">${l}${ty=='select'?`<select name="${k}" class="inp">${o.map(x=>`<option ${v[k]==x?'selected':''}>${x}</option>`).join('')}</select>`:`<input name="${k}" type="${ty=='wide'?'text':ty||'text'}" value="${E(v[k])}" class="inp" required>`}</label>`).join('')}</div><div class="flex justify-end gap-2 mt-4"><button type="button" onclick="closeModal()" class="btn2">Cancel</button><button class="btn"><i class="fa fa-check"></i> Save</button></div>`,1);
+ $('mf').onsubmit=e=>{e.preventDefault();cb(Object.fromEntries(new FormData(e.target)));closeModal()}}
+const sbt=()=>$('sb').classList.toggle('-translate-x-full');
+function dark(){document.documentElement.classList.toggle('dark');localStorage.setItem('edupak_dk',document.documentElement.classList.contains('dark')?1:'')}
+function go(p){page=p;$('sb').classList.add('-translate-x-full');render();scrollTo(0,0)}
+function render(){$('main').innerHTML=P[page]();$('main').classList.remove('fade');void $('main').offsetWidth;$('main').classList.add('fade');
+ $('nav').innerHTML=NAV.map(n=>`<div class="nav ${n[0]==page?'on':''}" onclick="go('${n[0]}')"><i class="fa ${n[1]} w-5 text-center"></i><span class="flex-1">${n[2]}</span><span class="urdu text-xs opacity-70">${n[3]}</span></div>`).join('');
+ $('sname').textContent=D.school;$('dt').textContent=new Date().toDateString()}
 
-  <!-- App container -->
-  <div class="flex h-screen overflow-hidden">
+/* ---------- data helpers ---------- */
+function mkV(s,m){if(D.vouch.some(v=>v.sid==s.id&&v.month==m))return 0;const c=D.classes.find(c=>c.n==s.cls);D.vouch.push({id:uid(),no:'V-'+(++D.vn),sid:s.id,month:m,amt:c?+c.fee:0});return 1}
+function addPay(v,amt,date,method,quiet){D.pays.push({id:uid(),vid:v.id,sid:v.sid,amt:+amt,date,method});const s=stu(v.sid);D.acc.push({id:uid(),date,type:'Income',cat:'Fees',amt:+amt,note:`Fee ${s.name} (${mL(v.month)})`});if(!quiet)log(`Fee received ${PKR(amt)} from ${s.name}`)}
+function genV(m){let n=0;D.students.forEach(s=>n+=mkV(s,m));save();log(`${n} fee vouchers generated for ${mL(m)}`);return n}
+function seed(){const t=today(),cm=curM(),pm=addM(cm,-1);
+ const cl=[['Nursery',1500],['Prep',1800],['Class 1',2000],['Class 2',2200],['Class 3',2400],['Class 4',2600],['Class 5',2800],['Class 6',3200],['Class 7',3500],['Class 8',3800],['Class 9',4500],['Class 10',4800],['Intermediate',6000]];
+ D={school:'Bright Future School',phone:'0300-1234567',classes:cl.map(c=>({n:c[0],sec:'A,B',fee:c[1]})),students:[],staff:[],att:{},satt:{},vouch:[],pays:[],marks:{},acc:[],log:[],vn:1000};
+ const nm=['Ahmed Raza','Ayesha Noor','Bilal Khan','Fatima Zahra','Hamza Ali','Maryam Iqbal','Usman Tariq','Hira Shahid','Zain Abbas','Sana Malik','Hassan Mehmood','Zoya Hussain','Taha Siddiqui','Areeba Khan','Ali Hamza','Iqra Nadeem'],cs=['Class 1','Class 5','Class 5','Class 8','Class 8','Prep','Class 3','Class 10'];
+ nm.forEach((n,i)=>D.students.push({id:'s'+i,name:n,cls:cs[i%8],sec:i<8?'A':'B',roll:String(i+1),parent:'Mr. '+n.split(' ')[1],phone:'0300-12345'+(10+i),addr:`House ${i+5}, Block ${'ABCD'[i%4]}, Model Colony`,adm:'2025-04-'+String(10+i)}));
+ [['Sir Imran Ali','Teacher',38000],['Miss Sadia Khan','Teacher',34000],['Miss Rabia Noor','Teacher',32000],['Sir Kamran Shah','Teacher',30000],['Mrs. Nasreen Akhtar','Principal',70000],['Rafiq Ahmed','Peon',18000],['Shabbir Hussain','Guard',20000]].forEach((x,i)=>D.staff.push({id:'t'+i,name:x[0],role:x[1],sal:x[2],join:'2024-0'+(1+i)+'-01',phone:'0321-98765'+(10+i)}));
+ for(let i=1;i<=5;i++){const d=ds(new Date(Date.now()-i*864e5));D.att[d]={};D.satt[d]={};D.students.forEach(s=>D.att[d][s.id]=Math.random()<.9?'P':Math.random()<.6?'A':'L');D.staff.forEach(s=>D.satt[d][s.id]=Math.random()<.95?'P':'A')}
+ D.students.forEach(s=>{mkV(s,pm);mkV(s,cm)});
+ D.students.forEach((s,i)=>{const pv=D.vouch.find(v=>v.sid==s.id&&v.month==pm),cv=D.vouch.find(v=>v.sid==s.id&&v.month==cm);
+  if(i%11!=5)addPay(pv,i%7==3?Math.round(pv.amt/2):pv.amt,pm+'-'+String(3+i%8).padStart(2,'0'),'Cash',1);
+  if(i%5==0)addPay(cv,cv.amt,t,i%2?'Cash':'JazzCash',1);else if(i%5==1)addPay(cv,cv.amt,cm+'-01','Cash',1)});
+ D.marks['Mid Term']={};D.students.forEach(s=>D.marks['Mid Term'][s.id]=SUB.map(()=>55+Math.random()*43|0));
+ [[cm+'-02','Expense','Rent',45000,'Building rent'],[cm+'-03','Expense','Marketing',5000,'Facebook & Instagram ads'],[cm+'-05','Expense','Utilities',18500,'Electricity & internet bill'],[t,'Expense','Stationery',3200,'Markers & registers'],[pm+'-28','Expense','Salaries',sum(D.staff.map(s=>s.sal)),'Staff salaries '+mL(pm)],[t,'Income','Donation',10000,'Parent donation – library']].forEach(a=>D.acc.push({id:uid(),date:a[0],type:a[1],cat:a[2],amt:a[3],note:a[4]}));
+ log('Demo data loaded – Welcome to EduPak!');log('4 fee payments received today')}
 
-    <!-- ========== SIDEBAR ========== -->
-    <aside class="no-print w-72 bg-white dark:bg-[#132222] border-r border-gray-200 dark:border-[#2a3e3a] flex flex-col shadow-sm z-20">
-      <div class="p-5 border-b border-gray-200 dark:border-[#2a3e3a] flex items-center gap-3">
-        <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl shadow-md">
-          <i class="fas fa-school"></i>
-        </div>
-        <div>
-          <h1 class="font-bold text-xl tracking-tight text-emerald-800 dark:text-emerald-300">EduManage</h1>
-          <p class="text-[11px] text-gray-500 dark:text-gray-400 font-medium">Pakistan · Paperless</p>
-        </div>
-      </div>
+/* ---------- Dashboard ---------- */
+P.dash=()=>{const t=today(),m=curM(),tc=sum(D.pays.filter(p=>p.date==t)),mc=sum(D.pays.filter(p=>p.date.startsWith(m))),pend=sum(D.vouch.map(vBal));
+ const ta=D.att[t]||{},tot=Object.keys(ta).length,pr=Object.values(ta).filter(x=>x!='A').length,pct=tot?Math.round(pr*100/tot):null;
+ const sa=D.satt[t]||{},card=(i,c,l,u,v,s)=>`<div class="card flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-${c}-100 text-${c}-600 flex items-center justify-center text-xl"><i class="fa ${i}"></i></div><div><div class="text-xs text-slate-500">${l} <span class="urdu">${u}</span></div><div class="text-xl font-bold">${v}</div><div class="text-[11px] text-slate-400">${s||''}</div></div></div>`;
+ const days=[...Array(7)].map((_,i)=>ds(new Date(Date.now()-(6-i)*864e5))),vals=days.map(d=>sum(D.pays.filter(p=>p.date==d))),mx=Math.max(...vals,1);
+ const df={};D.vouch.forEach(v=>{const b=vBal(v);if(b>0)df[v.sid]=(df[v.sid]||0)+b});const dl=Object.entries(df).sort((a,b)=>b[1]-a[1]).slice(0,5);
+ return `<div class="rounded-3xl bg-gradient-to-r from-emerald-600 to-sky-600 text-white p-6 mb-6 flex flex-wrap items-center justify-between gap-4 shadow-lg"><div><div class="urdu text-lg">السلام علیکم، پرنسپل صاحب 👋</div><div class="text-2xl font-bold mt-1">${E(D.school)}</div><div class="text-emerald-100 text-sm">Aaj ka poora school ek nazar mein — bina kisi register ke.</div></div>
+ <div class="flex flex-wrap gap-2"><button class="btn !bg-white !text-emerald-700" onclick="editStu()"><i class="fa fa-user-plus"></i> Admission</button><button class="btn !bg-white !text-emerald-700" onclick="go('fees')"><i class="fa fa-money-bill"></i> Collect Fee</button><button class="btn !bg-white !text-emerald-700" onclick="go('att')"><i class="fa fa-check"></i> Attendance</button><button class="btn !bg-white !text-emerald-700" onclick="go('mkt')"><i class="fa fa-bullhorn"></i> Create Post</button></div></div>
+ <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-6">${card('fa-user-graduate','emerald','Total Students','طلباء',D.students.length,D.classes.length+' classes')}${card('fa-chalkboard-user','sky','Total Staff','اسٹاف',D.staff.length,'Teachers & staff')}${card('fa-clipboard-check','teal',"Today's Attendance",'حاضری',pct===null?'Not marked':pct+'%','Staff present: '+Object.values(sa).filter(x=>x!='A').length+'/'+D.staff.length)}${card('fa-hourglass-half','rose','Pending Fees','بقایا',PKR(pend),D.vouch.filter(v=>vBal(v)>0).length+' vouchers open')}${card('fa-coins','amber',"Today's Collection",'آج کی وصولی',PKR(tc),D.pays.filter(p=>p.date==t).length+' payments')}${card('fa-chart-line','indigo','Monthly Collection','ماہانہ وصولی',PKR(mc),mL(m))}</div>
+ <div class="grid lg:grid-cols-3 gap-4 mb-4"><div class="card lg:col-span-2"><h3 class="font-bold mb-4">Fee Collection – Last 7 Days</h3><div class="flex items-end gap-3 h-44">${vals.map((v,i)=>`<div class="flex-1 flex flex-col items-center justify-end h-full"><div class="text-[10px] text-slate-400">${v?Math.round(v/1000)+'k':''}</div><div class="w-full rounded-t-xl bg-gradient-to-t from-emerald-500 to-sky-400" style="height:${Math.max(v/mx*100,3)}%"></div><div class="text-[10px] mt-1">${days[i].slice(5)}</div></div>`).join('')}</div></div>
+ <div class="card text-center"><h3 class="font-bold mb-4">Attendance Overview</h3>${pct===null?empty('Not marked yet','Open Attendance and mark today'):`<div class="mx-auto w-36 h-36 rounded-full flex items-center justify-center" style="background:conic-gradient(#10b981 ${pct}%,#fecaca 0)"><div class="w-28 h-28 rounded-full bg-white dark:bg-slate-800 flex flex-col items-center justify-center"><b class="text-2xl">${pct}%</b><span class="text-xs">Present</span></div></div><div class="text-sm mt-3">${pr} present • ${tot-pr} absent</div>`}</div></div>
+ <div class="grid lg:grid-cols-2 gap-4"><div class="card"><h3 class="font-bold mb-3">Recent Activities</h3>${D.log.length?D.log.slice(0,7).map(l=>`<div class="flex gap-3 py-1.5 border-b border-slate-100 dark:border-slate-700 text-sm"><i class="fa fa-circle-dot text-emerald-500 mt-1"></i><div class="flex-1">${E(l.m)}</div><div class="text-xs text-slate-400">${l.t}</div></div>`).join(''):empty('No activity yet','Actions will appear here')}</div>
+ <div class="card"><h3 class="font-bold mb-3">Top Fee Defaulters <span class="urdu text-sm text-rose-500">بقایا جات</span></h3>${dl.length?dl.map(([id,b])=>`<div class="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-700 text-sm"><span>${E(stu(id)?.name)} <span class="text-xs text-slate-400">${stu(id)?.cls}</span></span><b class="text-rose-600">${PKR(b)}</b></div>`).join(''):empty('No pending fees 🎉','All dues cleared')}</div></div>`};
 
-      <nav class="flex-1 overflow-y-auto p-4 space-y-1 text-sm font-medium">
-        <a href="#" data-view="dashboard" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl active"><i class="fas fa-chart-pie w-5 text-emerald-600"></i>Dashboard</a>
-        <a href="#" data-view="students" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl"><i class="fas fa-user-graduate w-5 text-blue-500"></i>Students</a>
-        <a href="#" data-view="staff" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl"><i class="fas fa-chalkboard-teacher w-5 text-amber-500"></i>Staff & Teachers</a>
-        <a href="#" data-view="attendance" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl"><i class="fas fa-check-circle w-5 text-indigo-500"></i>Attendance</a>
-        <a href="#" data-view="fees" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl"><i class="fas fa-file-invoice-dollar w-5 text-rose-500"></i>Fees & Invoices</a>
-        <a href="#" data-view="accounts" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl"><i class="fas fa-coins w-5 text-yellow-600"></i>Daily Accounts</a>
-        <a href="#" data-view="classes" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl"><i class="fas fa-layer-group w-5 text-cyan-600"></i>Classes & Sections</a>
-        <a href="#" data-view="exams" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl"><i class="fas fa-file-signature w-5 text-indigo-600"></i>Exams & Marks</a>
-        <a href="#" data-view="marketing" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/20 border border-purple-200 dark:border-purple-800"><i class="fas fa-bullhorn w-5 text-purple-600"></i>Marketing Toolkit <span class="ml-auto text-[10px] bg-purple-600 text-white px-2 py-0.5 rounded-full">USP</span></a>
-        <a href="#" data-view="flow" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/20 border border-blue-200 dark:border-blue-800"><i class="fas fa-route w-5 text-blue-600"></i>Demo Flow <span class="ml-auto text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full">GUIDE</span></a>
-      </nav>
+/* ---------- Students ---------- */
+const sRows=()=>{const q=(ui.sq||'').toLowerCase(),c=ui.sc||'',L=D.students.filter(s=>(!c||s.cls==c)&&(s.name+s.parent+s.phone).toLowerCase().includes(q));
+ return L.length?L.map(s=>`<tr><td>${s.roll}</td><td class="font-semibold">${E(s.name)}</td><td>${s.cls}-${s.sec}</td><td>${E(s.parent)}<div class="text-xs text-slate-400">${s.phone}</div></td><td>${s.adm}</td><td>${bd(fst(s.id))}</td><td class="whitespace-nowrap"><button class="btn2" onclick="prof('${s.id}')"><i class="fa fa-eye"></i></button> <button class="btn2" onclick="editStu('${s.id}')"><i class="fa fa-pen"></i></button> <button class="btn2 text-rose-600" onclick="delStu('${s.id}')"><i class="fa fa-trash"></i></button></td></tr>`).join(''):`<tr><td colspan="7">${empty('No students found','Click New Admission to add a student')}</td></tr>`};
+P.students=()=>head('Students','طلباء',`<button class="btn" onclick="editStu()"><i class="fa fa-user-plus"></i> New Admission</button>`)+`<div class="card"><div class="flex gap-2 mb-3 flex-wrap"><input class="inp !mt-0 max-w-xs" placeholder="Search name / parent / phone" value="${E(ui.sq||'')}" oninput="ui.sq=this.value;$('tb').innerHTML=sRows()"><select class="inp !mt-0 max-w-[180px]" onchange="ui.sc=this.value;$('tb').innerHTML=sRows()"><option value="">All classes</option>${D.classes.map(c=>`<option ${ui.sc==c.n?'selected':''}>${c.n}</option>`).join('')}</select></div><div class="overflow-x-auto"><table class="w-full"><tr><th>Roll</th><th>Name</th><th>Class</th><th>Parent / Phone</th><th>Admission</th><th>This Month Fee</th><th></th></tr><tbody id="tb">${sRows()}</tbody></table></div></div>`;
+function editStu(id){const s=id?stu(id):null;form(s?'Edit Student':'New Admission / نیا داخلہ',[['name','Student Name','wide'],['cls','Class','select',D.classes.map(c=>c.n)],['sec','Section','select',['A','B','C']],['roll','Roll Number','text'],['adm','Admission Date','date'],['parent','Parent Name'],['phone','Phone'],['addr','Address','wide']],s||{adm:today(),sec:'A',cls:'Class 1'},d=>{if(s)Object.assign(s,d);else{const n={id:uid(),...d};D.students.push(n);mkV(n,curM());log(`New admission: ${n.name} (${n.cls})`)}save();toast(s?'Student updated ✅':'Admission complete – fee voucher auto-generated ✅');render()})}
+function delStu(id){if(!confirm('Delete this student and their vouchers?'))return;D.students=D.students.filter(s=>s.id!=id);D.vouch=D.vouch.filter(v=>v.sid!=id);save();toast('Student deleted');render()}
+function prof(id){const s=stu(id),vs=D.vouch.filter(v=>v.sid==id).sort((a,b)=>b.month.localeCompare(a.month)),ex=Object.keys(D.marks).filter(e=>D.marks[e][id]);
+ modal(`<div class="flex items-center gap-3 mb-4"><div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold">${E(s.name[0])}</div><div><div class="text-xl font-bold">${E(s.name)}</div><div class="text-sm text-slate-500">${s.cls}-${s.sec} • Roll ${s.roll} • Admitted ${s.adm}</div></div></div><div class="grid grid-cols-2 gap-2 text-sm mb-4"><div>👨 ${E(s.parent)}</div><div>📞 ${s.phone}</div><div class="col-span-2">🏠 ${E(s.addr)}</div><div>📅 Attendance: <b>${attPct(id,'att')}%</b></div></div>
+ <h4 class="font-bold mb-1">Fee History</h4><table class="w-full mb-4"><tr><th>Month</th><th>Fee</th><th>Paid</th><th>Balance</th><th></th></tr>${vs.map(v=>`<tr><td>${mL(v.month)}</td><td>${PKR(v.amt)}</td><td>${PKR(vPaid(v))}</td><td>${PKR(vBal(v))} ${bd(vst(v))}</td><td><button class="btn2" onclick="showInv(['${v.id}'])"><i class="fa fa-print"></i></button></td></tr>`).join('')}</table>
+ <h4 class="font-bold mb-1">Exam Results</h4>${ex.length?ex.map(e=>`<button class="btn2 mr-1" onclick="rcard('${e}','${id}')">${E(e)}</button>`).join(''):'<div class="text-sm text-slate-400">No marks yet</div>'}<div class="text-right mt-3"><button class="btn2" onclick="closeModal()">Close</button></div>`,0,'max-w-2xl')}
 
-      <div class="p-5 border-t border-gray-200 dark:border-[#2a3e3a] flex items-center justify-between">
-        <div class="flex items-center gap-2 text-sm">
-          <i class="fas fa-moon text-gray-400"></i>
-          <span class="text-xs text-gray-500 dark:text-gray-400">Dark</span>
-        </div>
-        <button id="darkModeToggle" class="w-10 h-6 rounded-full bg-gray-300 dark:bg-emerald-700 relative transition-colors">
-          <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform dark:translate-x-4"></span>
-        </button>
-      </div>
-    </aside>
+/* ---------- Staff ---------- */
+P.staff=()=>head('Staff & Teachers','اسٹاف',`<button class="btn" onclick="editStaff()"><i class="fa fa-plus"></i> Add Staff</button>`)+`<div class="card overflow-x-auto">${D.staff.length?`<table class="w-full"><tr><th>Name</th><th>Designation</th><th>Salary</th><th>Joined</th><th>Phone</th><th>Attendance</th><th></th></tr>${D.staff.map(s=>`<tr><td class="font-semibold">${E(s.name)}</td><td>${s.role}</td><td>${PKR(s.sal)}</td><td>${s.join}</td><td>${s.phone}</td><td>${attPct(s.id,'satt')}%</td><td class="whitespace-nowrap"><button class="btn2" onclick="paySal('${s.id}')"><i class="fa fa-money-check-dollar"></i> Pay Salary</button> <button class="btn2" onclick="editStaff('${s.id}')"><i class="fa fa-pen"></i></button> <button class="btn2 text-rose-600" onclick="delStaff('${s.id}')"><i class="fa fa-trash"></i></button></td></tr>`).join('')}</table><div class="text-right text-sm mt-3">Monthly payroll: <b>${PKR(sum(D.staff.map(s=>+s.sal)))}</b></div>`:empty('No staff added','Add teachers and staff to manage payroll')}</div>`;
+function editStaff(id){const s=D.staff.find(x=>x.id==id);form(s?'Edit Staff':'Add Staff',[['name','Full Name','wide'],['role','Designation','select',['Teacher','Principal','Accountant','Clerk','Peon','Guard','Driver','Other']],['sal','Salary (PKR)','number'],['join','Joining Date','date'],['phone','Phone']],s||{join:today()},d=>{if(s)Object.assign(s,d);else{D.staff.push({id:uid(),...d});log('New staff: '+d.name)}save();toast('Staff saved ✅');render()})}
+function delStaff(id){if(confirm('Delete staff member?')){D.staff=D.staff.filter(s=>s.id!=id);save();render()}}
+function paySal(id){const s=D.staff.find(x=>x.id==id),m=curM(),ref='sal-'+id+'-'+m;if(D.acc.some(a=>a.ref==ref))return toast('Salary already paid for '+mL(m),'err');D.acc.push({id:uid(),date:today(),type:'Expense',cat:'Salaries',amt:+s.sal,note:`Salary ${s.name} (${mL(m)})`,ref});log(`Salary paid: ${s.name} ${PKR(s.sal)}`);save();toast('Salary paid & added to expenses ✅')}
 
-    <!-- ========== MAIN CONTENT ========== -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-      <header class="no-print bg-white/80 dark:bg-[#132222]/80 backdrop-blur-sm border-b border-gray-200 dark:border-[#2a3e3a] px-6 py-3 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-          <button id="mobileMenuBtn" class="md:hidden text-2xl text-gray-600 dark:text-gray-300"><i class="fas fa-bars"></i></button>
-          <h2 id="viewTitle" class="text-xl font-semibold text-emerald-800 dark:text-emerald-300">Dashboard</h2>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="text-sm bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 rounded-full text-emerald-800 dark:text-emerald-200"><i class="fas fa-calendar-alt mr-1"></i> <span id="todayDate"></span></span>
-          <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow">A</div>
-        </div>
-      </header>
+/* ---------- Attendance ---------- */
+P.att=()=>{const k=ui.at||'att',d=ui.ad||today(),isS=k=='att',c=ui.ac||'Class 5';ui.ad=d;ui.ac=c;const L=isS?D.students.filter(s=>s.cls==c):D.staff,rec=D[k][d]||{},n=x=>L.filter(s=>rec[s.id]==x).length;
+ return head('Attendance','حاضری',`<button class="btn" onclick="mkAll('P')"><i class="fa fa-check-double"></i> Mark All Present</button>`)+`<div class="card"><div class="flex flex-wrap gap-2 mb-4 items-center"><button class="btn2 ${isS?'!bg-emerald-600 text-white':''}" onclick="ui.at='att';render()">Students</button><button class="btn2 ${!isS?'!bg-emerald-600 text-white':''}" onclick="ui.at='satt';render()">Teachers & Staff</button><input type="date" class="inp !mt-0 max-w-[160px]" value="${d}" onchange="ui.ad=this.value;render()">${isS?`<select class="inp !mt-0 max-w-[160px]" onchange="ui.ac=this.value;render()">${D.classes.map(x=>`<option ${x.n==c?'selected':''}>${x.n}</option>`).join('')}</select>`:''}<div class="ml-auto text-sm">${bd('P')} ${n('P')} ${bd('A')} ${n('A')} ${bd('L')} ${n('L')}</div></div>
+ ${L.length?`<div class="overflow-x-auto"><table class="w-full"><tr><th>${isS?'Roll':'Role'}</th><th>Name</th><th>Mark</th><th>Overall %</th></tr>${L.map(s=>`<tr><td>${isS?s.roll:s.role}</td><td class="font-semibold">${E(s.name)}</td><td class="whitespace-nowrap">${['P','A','L'].map(x=>`<button onclick="mk('${s.id}','${x}')" class="px-3 py-1 rounded-lg text-sm font-semibold mr-1 ${rec[s.id]==x?(x=='P'?'bg-emerald-600':x=='A'?'bg-rose-600':'bg-amber-500')+' text-white':'bg-slate-100 dark:bg-slate-700'}">${x=='P'?'Present':x=='A'?'Absent':'Leave'}</button>`).join('')}</td><td>${attPct(s.id,k)}%</td></tr>`).join('')}</table></div>`:empty('No students in this class','Add students or select another class')}</div>`};
+function mk(id,v){const k=ui.at||'att';(D[k][ui.ad]=D[k][ui.ad]||{})[id]=v;save();render()}
+function mkAll(v){const k=ui.at||'att',L=k=='att'?D.students.filter(s=>s.cls==ui.ac):D.staff;D[k][ui.ad]=D[k][ui.ad]||{};L.forEach(s=>D[k][ui.ad][s.id]=v);log(`Attendance marked (${k=='att'?ui.ac:'Staff'}) ${ui.ad}`);save();toast('Attendance saved ✅');render()}
 
-      <main id="appContent" class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-transparent to-emerald-50/20 dark:to-transparent fade-in">
-      </main>
-    </div>
-  </div>
+/* ---------- Fees ---------- */
+const fv=()=>{const m=ui.fm||curM(),s=ui.fs||'',q=(ui.fq||'').toLowerCase();return D.vouch.filter(v=>v.month==m&&(!s||vst(v)==s)&&(stu(v.sid)?.name||'').toLowerCase().includes(q))};
+const fRows=()=>{if(ui.fv=='p'){const m=ui.fm||curM(),L=D.pays.filter(p=>p.date.startsWith(m)).sort((a,b)=>b.date.localeCompare(a.date));return L.length?L.map(p=>`<tr><td>${p.date}</td><td>${E(stu(p.sid)?.name)}</td><td>${mL(D.vouch.find(v=>v.id==p.vid)?.month||m)}</td><td>${p.method}</td><td class="font-semibold">${PKR(p.amt)}</td><td><button class="btn2" onclick="showInv(['${p.vid}'])"><i class="fa fa-print"></i></button></td></tr>`).join('')+`<tr><td colspan="4" class="text-right font-bold">Total</td><td class="font-bold">${PKR(sum(L))}</td><td></td></tr>`:`<tr><td colspan="6">${empty('No payments','Nothing collected this month yet')}</td></tr>`}
+ const L=fv();return L.length?L.map(v=>`<tr><td>${v.no}</td><td class="font-semibold">${E(stu(v.sid)?.name)}</td><td>${stu(v.sid)?.cls}</td><td>${PKR(v.amt)}</td><td>${PKR(vPaid(v))}</td><td class="text-rose-600 font-semibold">${PKR(vBal(v))}</td><td>${bd(vst(v))}</td><td class="whitespace-nowrap">${vBal(v)>0?`<button class="btn" onclick="collect('${v.id}')">Collect</button> `:''}<button class="btn2" onclick="showInv(['${v.id}'])"><i class="fa fa-print"></i></button></td></tr>`).join(''):`<tr><td colspan="8">${empty('No vouchers','Click Generate Vouchers for this month')}</td></tr>`};
+P.fees=()=>{const m=ui.fm||curM(),vs=D.vouch.filter(v=>v.month==m),b=sum(vs.map(v=>v.amt)),c=sum(vs.map(vPaid)),p=ui.fv=='p';
+ return head('Fees & Vouchers','فیس',`<button class="btn" onclick="gv()"><i class="fa fa-wand-magic-sparkles"></i> Generate Vouchers</button><button class="btn2" onclick="showInv(fv().map(v=>v.id))"><i class="fa fa-print"></i> Print All</button>`)+`<div class="grid sm:grid-cols-3 gap-4 mb-4"><div class="card"><div class="text-xs text-slate-500">Billed</div><div class="text-xl font-bold">${PKR(b)}</div></div><div class="card"><div class="text-xs text-slate-500">Collected</div><div class="text-xl font-bold text-emerald-600">${PKR(c)}</div></div><div class="card"><div class="text-xs text-slate-500">Pending</div><div class="text-xl font-bold text-rose-600">${PKR(b-c)}</div></div></div>
+ <div class="card"><div class="flex flex-wrap gap-2 mb-3 items-center"><input type="month" class="inp !mt-0 max-w-[170px]" value="${m}" onchange="ui.fm=this.value;render()"><button class="btn2 ${!p?'!bg-emerald-600 text-white':''}" onclick="ui.fv='v';render()">Vouchers</button><button class="btn2 ${p?'!bg-emerald-600 text-white':''}" onclick="ui.fv='p';render()">Collection Report</button>${p?'':`<select class="inp !mt-0 max-w-[140px]" onchange="ui.fs=this.value;render()"><option value="">All</option>${['Paid','Partial','Due'].map(x=>`<option ${ui.fs==x?'selected':''}>${x}</option>`).join('')}</select><input class="inp !mt-0 max-w-[200px]" placeholder="Search student" value="${E(ui.fq||'')}" oninput="ui.fq=this.value;$('tb').innerHTML=fRows()">`}</div>
+ <div class="overflow-x-auto"><table class="w-full">${p?'<tr><th>Date</th><th>Student</th><th>For Month</th><th>Method</th><th>Amount</th><th></th></tr>':'<tr><th>Voucher</th><th>Student</th><th>Class</th><th>Fee</th><th>Paid</th><th>Balance</th><th>Status</th><th></th></tr>'}<tbody id="tb">${fRows()}</tbody></table></div></div>`};
+function gv(){const n=genV(ui.fm||curM());toast(n?`${n} vouchers generated ✅`:'All vouchers already exist','');render()}
+function collect(id){const v=D.vouch.find(x=>x.id==id),s=stu(v.sid);form(`Collect Fee – ${E(s.name)} (${mL(v.month)})`,[['amt',`Amount (Balance ${PKR(vBal(v))})`,'number'],['date','Date','date'],['method','Method','select',['Cash','JazzCash','EasyPaisa','Bank Transfer']]],{amt:vBal(v),date:today()},d=>{const a=+d.amt;if(a<=0||a>vBal(v))return toast('Amount must be between 1 and balance','err');addPay(v,a,d.date,d.method);save();toast('Payment received ✅');render();showInv([v.id])})}
+function inv(v){const s=stu(v.sid)||{},p=D.pays.filter(x=>x.vid==v.id),b=vBal(v);return `<div class="p-6 bg-white text-slate-800 border-2 border-emerald-600 rounded-xl mb-4" style="page-break-inside:avoid;position:relative"><div class="flex justify-between items-center border-b-2 border-emerald-100 pb-3"><div class="flex items-center gap-3"><div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xl"><i class="fa fa-graduation-cap"></i></div><div><div class="font-bold text-lg">${E(D.school)}</div><div class="text-xs text-slate-500">Fee Voucher / <span class="urdu">فیس واؤچر</span> • ${E(D.phone)}</div></div></div><div class="text-right text-xs"><div class="font-bold text-emerald-700 text-base">${v.no}</div>Date: ${today()}<br>Month: ${mL(v.month)}</div></div>
+ <div class="grid grid-cols-2 gap-1 text-sm my-3"><div>Student: <b>${E(s.name)}</b></div><div>Class: <b>${s.cls}-${s.sec}</b></div><div>Parent: <b>${E(s.parent)}</b></div><div>Roll No: <b>${s.roll}</b></div></div>
+ <table class="w-full text-sm"><tr class="bg-emerald-50"><th>Description</th><th class="text-right">Amount</th></tr><tr><td>Tuition Fee – ${mL(v.month)}</td><td class="text-right">${PKR(v.amt)}</td></tr>${p.map(x=>`<tr><td class="text-slate-500">Received ${x.date} (${x.method})</td><td class="text-right text-emerald-700">- ${PKR(x.amt)}</td></tr>`).join('')}<tr class="bg-slate-50"><td class="font-bold">Balance Due</td><td class="text-right font-bold ${b>0?'text-rose-600':'text-emerald-700'}">${PKR(b)}</td></tr></table>
+ <div class="absolute right-6 bottom-16 border-4 rounded-lg px-3 py-1 font-bold rotate-[-10deg] opacity-70 ${b>0?'border-rose-500 text-rose-500':'border-emerald-600 text-emerald-600'}">${b>0?(vPaid(v)?'PARTIAL':'UNPAID'):'PAID'}</div>
+ <div class="flex justify-between text-xs text-slate-500 mt-8 pt-2"><span>Accountant Signature ______</span><span>Parent Signature ______</span></div><div class="urdu text-center text-xs mt-2 text-slate-500">فیس ہر ماہ کی 10 تاریخ تک جمع کروائیں۔ شکریہ</div></div>`}
+function showInv(ids){const L=ids.map(i=>D.vouch.find(v=>v.id==i)).filter(Boolean);if(!L.length)return toast('No vouchers to print','err');modal(`<div id="print">${L.map(inv).join('')}</div><div class="flex justify-end gap-2 no-print"><button class="btn2" onclick="closeModal()">Close</button><button class="btn" onclick="print()"><i class="fa fa-print"></i> Print</button></div>`,0,'max-w-3xl')}
 
-  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 space-y-2 no-print"></div>
+/* ---------- Exams ---------- */
+function rank(e,c){return D.students.filter(s=>s.cls==c&&D.marks[e]?.[s.id]).map(s=>{const t=sum(D.marks[e][s.id].map(Number));return{sid:s.id,t,p:Math.round(t/SUB.length*10)/10}}).sort((a,b)=>b.t-a.t)}
+P.exams=()=>{const c=ui.ec||'Class 5',e=ui.en||'Monthly Test';ui.ec=c;ui.en=e;const L=D.students.filter(s=>s.cls==c),R=rank(e,c);
+ return head('Exams & Marks','امتحانات',`<button class="btn" onclick="saveMarks()"><i class="fa fa-floppy-disk"></i> Save Marks</button>`)+`<div class="card"><div class="flex flex-wrap gap-2 mb-4"><select class="inp !mt-0 max-w-[160px]" onchange="ui.ec=this.value;render()">${D.classes.map(x=>`<option ${x.n==c?'selected':''}>${x.n}</option>`).join('')}</select><input list="exl" class="inp !mt-0 max-w-[200px]" value="${E(e)}" placeholder="Exam / Test name" onchange="ui.en=this.value.replace(/['&quot;]/g,'');render()"><datalist id="exl">${Object.keys(D.marks).map(x=>`<option value="${E(x)}">`).join('')}</datalist><span class="text-xs text-slate-400 self-center">Each subject out of 100</span></div>
+ ${L.length?`<div class="overflow-x-auto"><table class="w-full"><tr><th>Roll</th><th>Name</th>${SUB.map(x=>`<th>${x}</th>`).join('')}<th>Total</th><th>%</th><th>Grade</th><th>Pos</th><th></th></tr>${L.map(s=>{const m=D.marks[e]?.[s.id],r=R.findIndex(x=>x.sid==s.id);return`<tr><td>${s.roll}</td><td class="font-semibold">${E(s.name)}</td>${SUB.map((x,i)=>`<td><input id="m_${s.id}_${i}" type="number" min="0" max="100" class="inp !w-16 !mt-0 !px-2" value="${m?m[i]:''}"></td>`).join('')}<td>${r>=0?R[r].t:'—'}</td><td>${r>=0?R[r].p+'%':'—'}</td><td>${r>=0?bd(grade(R[r].p)):''}</td><td>${r>=0?'#'+(r+1):''}</td><td>${m?`<button class="btn2" onclick="rcard('${E(e)}','${s.id}')"><i class="fa fa-print"></i></button>`:''}</td></tr>`}).join('')}</table></div>`:empty('No students in this class','Add students first')}</div>`};
+function saveMarks(){const e=ui.en;D.marks[e]=D.marks[e]||{};let n=0;D.students.filter(s=>s.cls==ui.ec).forEach(s=>{const a=SUB.map((x,i)=>$(`m_${s.id}_${i}`)?.value);if(a.some(x=>x!=='')){D.marks[e][s.id]=a.map(x=>Math.min(100,+x||0));n++}});log(`Marks saved: ${e} (${ui.ec})`);save();toast(`Marks saved for ${n} students ✅`);render()}
+function rcard(e,id){const s=stu(id),m=D.marks[e][id].map(Number),t=sum(m),p=Math.round(t/SUB.length*10)/10,R=rank(e,s.cls);modal(`<div id="print"><div class="p-6 bg-white text-slate-800 border-2 border-sky-600 rounded-xl"><div class="text-center border-b pb-3"><div class="text-xl font-bold">${E(D.school)}</div><div class="text-sm">Progress Report Card • <span class="urdu">رپورٹ کارڈ</span></div><div class="text-xs text-slate-500">${E(e)}</div></div><div class="grid grid-cols-2 text-sm my-3"><div>Name: <b>${E(s.name)}</b></div><div>Class: <b>${s.cls}-${s.sec}</b></div><div>Roll No: <b>${s.roll}</b></div><div>Parent: <b>${E(s.parent)}</b></div></div><table class="w-full text-sm"><tr class="bg-sky-50"><th>Subject</th><th>Total</th><th>Obtained</th><th>Grade</th></tr>${SUB.map((x,i)=>`<tr><td>${x}</td><td>100</td><td>${m[i]}</td><td>${grade(m[i])}</td></tr>`).join('')}<tr class="font-bold bg-slate-50"><td>Total</td><td>${SUB.length*100}</td><td>${t}</td><td>${grade(p)}</td></tr></table><div class="flex justify-between mt-3 text-sm"><span>Percentage: <b>${p}%</b></span><span>Position in class: <b>#${R.findIndex(x=>x.sid==id)+1}</b></span></div><div class="text-xs text-slate-500 mt-2">Remarks: ${p>=80?'Excellent performance, keep it up!':p>=60?'Good effort, can improve further.':'Needs more attention and practice.'}</div><div class="flex justify-between text-xs text-slate-500 mt-8"><span>Class Teacher ______</span><span>Principal ______</span></div></div></div><div class="flex justify-end gap-2 mt-3 no-print"><button class="btn2" onclick="closeModal()">Close</button><button class="btn" onclick="print()"><i class="fa fa-print"></i> Print</button></div>`,0,'max-w-2xl')}
 
-  <script>
-    (function() {
-      const LS_KEYS = {
-        students: 'edu_students_v2',
-        staff: 'edu_staff_v2',
-        attendance: 'edu_attendance_v2',
-        staffAttendance: 'edu_staff_attendance',
-        fees: 'edu_fees_v2',
-        accounts: 'edu_accounts_v2',
-        classes: 'edu_classes_v2',
-        exams: 'edu_exams_v2',
-        marketing: 'edu_marketing_v2'
-      };
+/* ---------- Accounts ---------- */
+P.acc=()=>{const t=today(),m=curM(),A=D.acc,i=(f)=>sum(A.filter(a=>a.type=='Income'&&f(a))),x=(f)=>sum(A.filter(a=>a.type=='Expense'&&f(a))),days=[...Array(7)].map((_,k)=>ds(new Date(Date.now()-(6-k)*864e5))),mx=Math.max(...days.map(d=>Math.max(i(a=>a.date==d),x(a=>a.date==d))),1),mi=i(a=>a.date.startsWith(m)),me=x(a=>a.date.startsWith(m));
+ const c=(l,v,cl)=>`<div class="card"><div class="text-xs text-slate-500">${l}</div><div class="text-xl font-bold ${cl}">${PKR(v)}</div></div>`;
+ return head('Daily Accounts','حساب کتاب',`<button class="btn" onclick="editAcc('Income')"><i class="fa fa-plus"></i> Income</button><button class="btn !bg-rose-600" onclick="editAcc('Expense')"><i class="fa fa-minus"></i> Expense</button>`)+`<div class="grid sm:grid-cols-2 xl:grid-cols-5 gap-4 mb-4">${c("Today's Income",i(a=>a.date==t),'text-emerald-600')}${c("Today's Expense",x(a=>a.date==t),'text-rose-600')}${c('Month Income',mi,'text-emerald-600')}${c('Month Expense',me,'text-rose-600')}${c('Net Cash Flow',mi-me,mi-me>=0?'text-sky-600':'text-rose-600')}</div>
+ <div class="card mb-4"><h3 class="font-bold mb-3">Cash Flow – Last 7 Days <span class="text-xs font-normal text-slate-400">(green income, red expense)</span></h3><div class="flex items-end gap-3 h-36">${days.map(d=>`<div class="flex-1 flex flex-col items-center justify-end h-full"><div class="flex items-end gap-1 w-full h-full justify-center"><div class="w-1/3 rounded-t bg-emerald-500" style="height:${i(a=>a.date==d)/mx*100}%"></div><div class="w-1/3 rounded-t bg-rose-400" style="height:${x(a=>a.date==d)/mx*100}%"></div></div><div class="text-[10px] mt-1">${d.slice(5)}</div></div>`).join('')}</div></div>
+ <div class="card overflow-x-auto"><h3 class="font-bold mb-2">Recent Entries</h3>${A.length?`<table class="w-full"><tr><th>Date</th><th>Type</th><th>Category</th><th>Note</th><th>Amount</th><th></th></tr>${[...A].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,25).map(a=>`<tr><td>${a.date}</td><td>${bd(a.type)}</td><td>${a.cat}</td><td>${E(a.note)}</td><td class="font-semibold">${PKR(a.amt)}</td><td><button class="btn2 text-rose-600" onclick="D.acc=D.acc.filter(z=>z.id!='${a.id}');save();render()"><i class="fa fa-trash"></i></button></td></tr>`).join('')}</table>`:empty('No entries','Add income or expense')}</div>`};
+function editAcc(t){form(t+' Entry',[['date','Date','date'],['cat','Category','select',CATS],['amt','Amount (PKR)','number'],['note','Note','wide']],{date:today(),cat:t=='Income'?'Fees':'Utilities'},d=>{D.acc.push({id:uid(),type:t,...d,amt:+d.amt});log(`${t}: ${d.cat} ${PKR(d.amt)}`);save();toast(t+' saved ✅');render()})}
 
-      function loadData(key, seed) {
-        const stored = localStorage.getItem(key);
-        if (stored) return JSON.parse(stored);
-        localStorage.setItem(key, JSON.stringify(seed));
-        return seed;
-      }
+/* ---------- Classes ---------- */
+P.classes=()=>head('Classes & Fee Structure','کلاسز',`<button class="btn" onclick="addClass()"><i class="fa fa-plus"></i> Add Class</button>`)+`<div class="card overflow-x-auto"><table class="w-full"><tr><th>Class</th><th>Sections (comma separated)</th><th>Monthly Fee (PKR)</th><th>Students</th><th></th></tr>${D.classes.map((c,i)=>`<tr><td class="font-semibold">${c.n}</td><td><input class="inp !mt-0 max-w-[140px]" value="${c.sec}" onchange="D.classes[${i}].sec=this.value;save();toast('Saved')"></td><td><input type="number" class="inp !mt-0 max-w-[140px]" value="${c.fee}" onchange="D.classes[${i}].fee=+this.value;save();toast('Fee structure updated ✅')"></td><td>${D.students.filter(s=>s.cls==c.n).length}</td><td><button class="btn2 text-rose-600" onclick="delClass(${i})"><i class="fa fa-trash"></i></button></td></tr>`).join('')}</table><div class="text-xs text-slate-400 mt-3">Fee changes apply to newly generated vouchers.</div></div>`;
+function addClass(){form('Add Class',[['n','Class Name'],['sec','Sections'],['fee','Monthly Fee','number']],{sec:'A'},d=>{D.classes.push({n:d.n,sec:d.sec,fee:+d.fee});save();render()})}
+function delClass(i){if(D.students.some(s=>s.cls==D.classes[i].n))return toast('Class has students – move them first','err');D.classes.splice(i,1);save();render()}
 
-      // ---------- SEED DATA (DEMO READY) ----------
-      const classList = [
-        { id: 'nursery', name: 'Nursery', sections: ['A', 'B'] },
-        { id: 'prep', name: 'Prep', sections: ['A', 'B'] },
-        ...Array.from({ length: 10 }, (_, i) => ({ id: `class${i+1}`, name: `Class ${i+1}`, sections: ['A', 'B', 'C'] })),
-        { id: 'inter1', name: 'Intermediate Part I', sections: ['Pre-Medical', 'Pre-Engineering'] },
-        { id: 'inter2', name: 'Intermediate Part II', sections: ['Pre-Medical', 'Pre-Engineering'] }
-      ];
+/* ---------- Marketing Toolkit ---------- */
+function gen(n,e,d,t,i,s,ph){const b=({Emotional:0,Professional:1,Fun:2})[t]||0,x=k=>(b+i+k)%3,dd=d?`\n\n📝 ${d}`:'',tag='#'+n.replace(/[^a-z0-9]/gi,'');
+ const wa=[`${e} *${n}* ${e}\n\nAaj ${s} mein ${n} ka din bohat yaadgar raha! ✨\nHamare nanhe sitaron ki muskurahat hi hamari sabse badi kamyabi hai. 💚${dd}\n\n_Taleem ke saath Tarbiyat_ 🎓\n📞 Admissions Open: ${ph}`,
+ `${e} Alhamdulillah! Aaj ${s} mein ${n} hua.\n"Aaj ke bachay, kal ka Pakistan" 🇵🇰${dd}\n\nApne bachay ka roshan mustaqbil — ${s} ke saath.\n📲 Rabta karein: ${ph}`,
+ `✨ ${n} ✨\nProud moment for our ${s} family! 👏 Bachon ki mehnat aur teachers ki lagan rang laayi. 💪${dd}\n\nAdmissions Open | Limited Seats 🏫 ${ph}`],
+ cap=[`${e} ${n} at ${s}! ${e}\n\nA day full of learning, laughter and proud parent moments! ✨ Hamare bachon ne dikha diya ke jab talent ko sahi rehnumai milti hai to kamal ho jata hai.${dd}\n\n💚 Why parents trust ${s}:\n✅ Qualified & caring teachers\n✅ Safe, clean & CCTV-monitored campus\n✅ Islamic values + modern education\n✅ Regular parent updates on WhatsApp\n\n📲 Admissions Open — Call/WhatsApp: ${ph}\n👨‍👩‍👧 Tag a parent who must see this! ❤️`,
+ `${e} Moments that make us proud — ${n}!\n\nAt ${s}, we believe every child is a star. 🌟 Today's ${n} was proof of the confidence, creativity and character we build every single day.${dd}\n\n🎯 Limited seats left for the new session.\n📞 ${ph}\n💬 DM us "ADMISSION" for fee structure & free campus visit!`,
+ `Aaj ${s} mein kya hua? 😍 ${n}! ${e}\n\nBachay seekhte bhi hain aur enjoy bhi karte hain — yehi hai asli taleem! 🎒💚${dd}\n\n👉 Apne bachay ko dein behtareen shuruaat.\n📍 Visit us for a FREE campus tour\n📞 ${ph}\n\nLike ❤️ Share 🔁 Follow 📲`],
+ reel=[`🎬 "${n}" – 20s Reel\n\n⏱ 0–3s HOOK: Fast zoom on the busiest moment. Text: "Aaj ${s} mein kya hua? 😍"\n⏱ 3–10s: 3 quick clips (bachon ke chehre, teacher ki muskurahat, activity close-up). Voiceover: "${n} — jahan bachay seekhte bhi hain aur muskurate bhi!"\n⏱ 10–17s: Ek bachay ka one-liner: "Mujhe aaj bohat maza aaya!"\n⏱ 17–20s CTA: School gate + logo. Text: "Admissions Open 📞 ${ph}"\n\n🎵 Soft upbeat track • Urdu+English subtitles • Post 7–9 PM`,
+ `🎬 "Parent Reaction" – 25s Reel\n\n⏱ 0–4s: Walk into ${n} with camera. Text: "Dekhiye hamare bachon ka kamal ${e}"\n⏱ 4–15s: Slow-mo montage of best 5 moments, beat-synced.\n⏱ 15–22s: Parent (with permission): "Mujhe ${s} par fakhar hai."\n⏱ 22–25s: Text: "Apne bachay ko bhi banayein ${s} ka hissa — ${ph}"\n\n🎵 Trending instrumental • Add Urdu captions • Post at lunch time`,
+ `🎬 "Before vs After" – 15s Reel\n\n⏱ 0–5s: Empty hall/ground, text "Subah 8 baje…"\n⏱ 5–12s: Beat drop → ${n} full of energy & colour! ${e}\n⏱ 12–15s: Text: "Yeh hai ${s} ka din! Admissions Open 📞 ${ph}"\n\n🎵 Upbeat beat drop • Short & punchy • Post on Reels + Shorts + TikTok`],
+ hs=['#PakistaniSchools','#EducationPakistan','#SchoolLife','#AdmissionsOpen','#PrivateSchool','#BestSchool','#Taleem','#ParentsOfPakistan','#FutureLeaders','#PakistanZindabad',tag,'#'+s.replace(/[^a-z0-9]/gi,'')].join(' ');
+ return[['fa-brands fa-whatsapp','text-green-600','WhatsApp Status / واٹس ایپ اسٹیٹس',wa[x(0)]],['fa-brands fa-facebook','text-blue-600','Facebook / Instagram Caption',cap[x(1)]],['fa-clapperboard','text-rose-500','Reel / TikTok / Shorts Idea + Script',reel[x(2)]],['fa-hashtag','text-sky-600','Hashtags',hs]]}
+P.mkt=()=>{const m=ui.mk||{},o=m.n?gen(m.n,m.e||'🎉',m.d,m.t,m.i||0,D.school,D.phone):null;OUT=o?o.map(x=>x[3]):[];
+ return head('Marketing Toolkit','مارکیٹنگ ٹول کٹ','<span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">⭐ Daily content in 1 click</span>')+`<div class="grid xl:grid-cols-3 gap-4"><div class="card xl:col-span-1 h-fit"><h3 class="font-bold mb-2">Aaj school mein kya hua?</h3><label class="text-xs font-semibold">Today's activity / news / event<input id="mn" class="inp" placeholder="e.g. Science fair held today" value="${E(m.n||'')}"></label><label class="text-xs font-semibold block mt-3">Extra details (optional)<input id="md" class="inp" placeholder="e.g. Class 5 won 1st prize" value="${E(m.d||'')}"></label><label class="text-xs font-semibold block mt-3">Tone<select id="mt" class="inp">${['Emotional','Professional','Fun'].map(x=>`<option ${m.t==x?'selected':''}>${x}</option>`).join('')}</select></label><button class="btn w-full mt-4" onclick="mkGen()"><i class="fa fa-wand-magic-sparkles"></i> Generate Content</button>
+ <h4 class="font-bold mt-5 mb-2 text-sm">Template Library</h4><div class="flex flex-wrap gap-2">${LIB.map((l,i)=>`<button class="btn2 text-xs" onclick="lib(${i})">${l[0]} ${l[1]} <span class="urdu">${l[2]}</span></button>`).join('')}</div></div>
+ <div class="xl:col-span-2 space-y-4">${o?o.map((x,i)=>`<div class="card"><div class="flex items-center justify-between mb-2"><h3 class="font-bold"><i class="${x[0]} ${x[1]}"></i> ${x[2]}</h3><div class="flex gap-2">${i==0?`<a class="btn2" target="_blank" href="https://wa.me/?text=${encodeURIComponent(x[3])}"><i class="fa-brands fa-whatsapp"></i> Share</a>`:''}<button class="btn2" onclick="cp(${i})"><i class="fa fa-copy"></i> Copy</button></div></div><div class="whitespace-pre-wrap text-sm bg-emerald-50/60 dark:bg-slate-700/50 rounded-xl p-4">${E(x[3])}</div></div>`).join('')+`<div class="text-center"><button class="btn2" onclick="ui.mk.i++;render()"><i class="fa fa-rotate"></i> Regenerate new variation</button></div>`:`<div class="card">${empty('Aapka content yahan ayega','Type today’s activity or tap a template to get a WhatsApp status, caption, reel script & hashtags instantly')}</div>`}</div></div>`};
+function mkGen(){const n=$('mn').value.trim();if(!n)return toast('Please type today’s activity first','err');ui.mk={n,e:'🎉',d:$('md').value.trim(),t:$('mt').value,i:0};log('Marketing content created: '+n);save();render()}
+function lib(i){ui.mk={n:LIB[i][1],e:LIB[i][0],d:'',t:'Emotional',i:0};render()}
+function cp(i){navigator.clipboard.writeText(OUT[i]).then(()=>toast('Copied ✅'),()=>toast('Copy failed','err'))}
 
-      // ---- Students (demo: 6 students with full records) ----
-      let students = loadData(LS_KEYS.students, [
-        { id: 's1', name: 'Ali Raza', classId: 'class1', section: 'A', roll: 1, parent: 'Imran Raza', phone: '03001234567', address: 'Model Town, Lahore', admissionDate: '2025-04-01', feeStatus: 'paid', dob: '2016-05-12' },
-        { id: 's2', name: 'Sara Khan', classId: 'class2', section: 'B', roll: 2, parent: 'Bilal Khan', phone: '03219876543', address: 'Gulshan, Karachi', admissionDate: '2025-04-02', feeStatus: 'partial', dob: '2015-08-22' },
-        { id: 's3', name: 'Usman Ali', classId: 'nursery', section: 'A', roll: 1, parent: 'Tariq Ali', phone: '03334455667', address: 'F-8, Islamabad', admissionDate: '2025-04-05', feeStatus: 'unpaid', dob: '2020-11-02' },
-        { id: 's4', name: 'Ayesha Malik', classId: 'class5', section: 'A', roll: 5, parent: 'Nadeem Malik', phone: '03451239876', address: 'DHA Phase 2, Lahore', admissionDate: '2025-04-03', feeStatus: 'paid', dob: '2013-03-15' },
-        { id: 's5', name: 'Hassan Ahmed', classId: 'class8', section: 'B', roll: 12, parent: 'Rashid Ahmed', phone: '03127654321', address: 'Satellite Town, Rawalpindi', admissionDate: '2025-04-04', feeStatus: 'paid', dob: '2010-07-19' },
-        { id: 's6', name: 'Zainab Fatima', classId: 'inter1', section: 'Pre-Medical', roll: 3, parent: 'Shahid Hussain', phone: '03009871234', address: 'Johar Town, Lahore', admissionDate: '2025-04-06', feeStatus: 'partial', dob: '2008-09-01' }
-      ]);
+/* ---------- Demo guide ---------- */
+const nxt=()=>addM(curM(),1);
+function dAdm(){if(D.students.some(s=>s.name=='Muhammad Danish'))return toast('Demo student already exists','err');const s={id:'demo1',name:'Muhammad Danish',cls:'Class 5',sec:'A',roll:'31',parent:'Mr. Tariq Mehmood',phone:'0321-5550123',addr:'House 12, Street 4, Gulshan Colony',adm:today()};D.students.push(s);mkV(s,curM());log('New admission: Muhammad Danish (Class 5)');save();ui.sq='Danish';toast('Admission done + fee voucher auto-generated ✅');go('students')}
+function dAtt(){D.att[today()]={};D.students.forEach((s,i)=>D.att[today()][s.id]=i%9==4?'A':i%13==6?'L':'P');log('Student attendance marked – all classes');save();ui.at='att';ui.ad=today();ui.ac='Class 5';toast('Attendance marked ✅');go('att')}
+function dSAtt(){D.satt[today()]={};D.staff.forEach((s,i)=>D.satt[today()][s.id]=i==3?'L':'P');log('Staff attendance marked');save();ui.at='satt';ui.ad=today();toast('Staff attendance marked ✅');go('att')}
+function dExam(){const e='Monthly Test';D.marks[e]=D.marks[e]||{};D.students.filter(s=>s.cls=='Class 5').forEach(s=>D.marks[e][s.id]=SUB.map(()=>60+Math.random()*38|0));log('Marks entered: Monthly Test (Class 5)');save();ui.ec='Class 5';ui.en=e;toast('Marks saved ✅');go('exams')}
+function dGen(){ui.fm=nxt();ui.fv='v';const n=genV(nxt());toast(`${n} vouchers for ${mL(nxt())} ✅`);go('fees')}
+function dColl(){ui.fm=curM();ui.fv='v';ui.fq='Danish';const v=D.vouch.find(v=>v.sid=='demo1'&&v.month==curM());if(!v)return toast('Pehle step 2 (admission) karein','err');if(vBal(v)>0)addPay(v,Math.min(1000,vBal(v)),today(),'JazzCash');save();go('fees');showInv([v.id]);toast('Partial payment received – invoice ready ✅')}
+function dExp(){D.acc.push({id:uid(),date:today(),type:'Expense',cat:'Maintenance',amt:4500,note:'Generator diesel',});log('Expense: Maintenance Rs 4,500');if(!D.acc.some(a=>a.ref=='sal-t0-'+curM()))paySal('t0');save();toast('Expense + salary recorded ✅');go('acc')}
+function dMkt(){ui.mk={n:'Science Fair',e:'🔬',d:'Class 5 students presented 20 working models',t:'Emotional',i:0};go('mkt')}
+const STEPS=[['Dashboard Overview','ڈیش بورڈ','Owner ko poora school ek nazar mein: students, staff, fees, attendance, collection. Yahan se demo shuru karein.',()=>go('dash'),'Open Dashboard'],
+['New Admission → Auto Fee Voucher','نیا داخلہ','Danish ka admission (parent, phone, class, date) save hota hai aur is mahine ka fee voucher khud ban jata hai.',dAdm,'Admit Demo Student'],
+['Student Attendance (Class-wise)','حاضری','Class select karein, Present/Absent/Leave mark karein — percentage khud calculate hota hai.',dAtt,'Mark Today’s Attendance'],
+['Staff / Teacher Attendance','اسٹاف حاضری','Teachers aur staff ki daily attendance ek hi screen par.',dSAtt,'Mark Staff Attendance'],
+['Exam / Test Marks + Report Card','نتائج','Class 5 ke marks enter hote hain; total, %, grade aur position khud nikalti hai. Report card print karein.',dExam,'Enter Test Marks'],
+['Monthly Fee Vouchers (Next Month)','ماہانہ واؤچر','Ek click par poore school ke agle mahine ke vouchers. "Print All" se sab print.',dGen,'Generate Next Month Vouchers'],
+['Collect Fee → Partial Payment → Invoice','فیس وصولی','Danish ki aadhi fees (Rs 1,000) lein; remaining balance track hota hai aur printable invoice banta hai.',dColl,'Collect Rs 1,000 & Show Invoice'],
+['Daily Accounts + Salary','روزانہ حساب','Expense entry aur teacher salary payment — daily/monthly cash flow foran update.',dExp,'Add Expense & Pay Salary'],
+['Marketing Toolkit ⭐','مارکیٹنگ','Aaj ki activity likhein → WhatsApp status, Facebook caption, Reel script aur hashtags ready. Yeh aapki USP hai!',dMkt,'Generate Marketing Content'],
+['Final Dashboard','فائنل','Dobara dashboard dekhein: collection, attendance aur pending fees sab update ho chuke hain.',()=>go('dash'),'View Updated Dashboard']];
+P.demo=()=>head('Demo Guide','ڈیمو گائیڈ','<button class="btn2 text-rose-600" onclick="resetD()"><i class="fa fa-rotate-left"></i> Reset Demo Data</button>')+`<div class="card mb-4"><h3 class="font-bold mb-2">School Settings</h3><div class="grid sm:grid-cols-2 gap-3"><label class="text-xs font-semibold">School Name<input class="inp" value="${E(D.school)}" onchange="D.school=this.value;save();render()"></label><label class="text-xs font-semibold">WhatsApp / Phone (used in marketing)<input class="inp" value="${E(D.phone)}" onchange="D.phone=this.value;save();toast('Saved')"></label></div></div>
+ <div class="text-sm text-slate-500 mb-3">Client ko complete flow dikhane ke liye upar se neeche steps ko ek ek karke chalayein. Har step data khud bhar deta hai.</div><div class="space-y-3">${STEPS.map((s,i)=>`<div class="card flex gap-4 items-center"><div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0">${i+1}</div><div class="flex-1"><div class="font-bold">${s[0]} <span class="urdu text-emerald-600 text-sm">${s[1]}</span></div><div class="text-sm text-slate-500">${s[2]}</div></div><button class="btn shrink-0" onclick="STEPS[${i}][3]()">${s[4]}</button></div>`).join('')}</div>`;
+function resetD(){if(confirm('Reset all data to fresh demo data?')){localStorage.removeItem(K);seed();save();ui={};render();toast('Demo data reset ✅')}}
 
-      // ---- Staff (demo: 4 members) ----
-      let staff = loadData(LS_KEYS.staff, [
-        { id: 't1', name: 'Fatima Ahmed', designation: 'Senior Teacher', salary: 45000, joiningDate: '2020-03-15', contact: '03011122334', subject: 'Mathematics' },
-        { id: 't2', name: 'Muhammad Asif', designation: 'Principal', salary: 90000, joiningDate: '2018-01-10', contact: '03219988776', subject: 'Administration' },
-        { id: 't3', name: 'Saima Bibi', designation: 'Junior Teacher', salary: 25000, joiningDate: '2023-08-01', contact: '03338889900', subject: 'English' },
-        { id: 't4', name: 'Ahmed Nawaz', designation: 'Accountant', salary: 35000, joiningDate: '2022-05-15', contact: '03451112233', subject: 'Accounts' }
-      ]);
-
-      // ---- Student Attendance (last 5 days demo) ----
-      let attendance = loadData(LS_KEYS.attendance, [
-        { date: '2026-11-15', studentId: 's1', status: 'present' }, { date: '2026-11-15', studentId: 's2', status: 'present' },
-        { date: '2026-11-15', studentId: 's3', status: 'absent' }, { date: '2026-11-15', studentId: 's4', status: 'present' },
-        { date: '2026-11-16', studentId: 's1', status: 'present' }, { date: '2026-11-16', studentId: 's2', status: 'absent' },
-        { date: '2026-11-16', studentId: 's3', status: 'present' }, { date: '2026-11-16', studentId: 's4', status: 'present' },
-        { date: '2026-11-17', studentId: 's1', status: 'present' }, { date: '2026-11-17', studentId: 's2', status: 'present' },
-        { date: '2026-11-17', studentId: 's3', status: 'present' }, { date: '2026-11-17', studentId: 's4', status: 'absent' },
-        { date: '2026-11-18', studentId: 's1', status: 'present' }, { date: '2026-11-18', studentId: 's2', status: 'present' },
-        { date: '2026-11-18', studentId: 's3', status: 'present' }, { date: '2026-11-18', studentId: 's4', status: 'present' },
-        { date: '2026-11-19', studentId: 's1', status: 'present' }, { date: '2026-11-19', studentId: 's2', status: 'present' },
-        { date: '2026-11-19', studentId: 's3', status: 'absent' }, { date: '2026-11-19', studentId: 's4', status: 'present' }
-      ]);
-
-      // ---- Staff Attendance (last 3 days) ----
-      let staffAttendance = loadData(LS_KEYS.staffAttendance, [
-        { date: '2026-11-17', staffId: 't1', status: 'present' }, { date: '2026-11-17', staffId: 't2', status: 'present' },
-        { date: '2026-11-17', staffId: 't3', status: 'present' }, { date: '2026-11-17', staffId: 't4', status: 'present' },
-        { date: '2026-11-18', staffId: 't1', status: 'present' }, { date: '2026-11-18', staffId: 't2', status: 'present' },
-        { date: '2026-11-18', staffId: 't3', status: 'absent' }, { date: '2026-11-18', staffId: 't4', status: 'present' },
-        { date: '2026-11-19', staffId: 't1', status: 'present' }, { date: '2026-11-19', staffId: 't2', status: 'present' },
-        { date: '2026-11-19', staffId: 't3', status: 'present' }, { date: '2026-11-19', staffId: 't4', status: 'present' }
-      ]);
-
-      // ---- Fees (demo: multiple months) ----
-      let fees = loadData(LS_KEYS.fees, [
-        { id: 'f1', studentId: 's1', amount: 5000, paid: 5000, date: '2026-11-01', month: 'November 2026', status: 'paid' },
-        { id: 'f2', studentId: 's2', amount: 5000, paid: 2500, date: '2026-11-05', month: 'November 2026', status: 'partial' },
-        { id: 'f3', studentId: 's3', amount: 4500, paid: 0, date: '2026-11-10', month: 'November 2026', status: 'unpaid' },
-        { id: 'f4', studentId: 's4', amount: 5500, paid: 5500, date: '2026-11-02', month: 'November 2026', status: 'paid' },
-        { id: 'f5', studentId: 's5', amount: 6000, paid: 6000, date: '2026-11-03', month: 'November 2026', status: 'paid' },
-        { id: 'f6', studentId: 's6', amount: 7000, paid: 3500, date: '2026-11-04', month: 'November 2026', status: 'partial' },
-        { id: 'f7', studentId: 's1', amount: 5000, paid: 5000, date: '2026-10-01', month: 'October 2026', status: 'paid' },
-        { id: 'f8', studentId: 's2', amount: 5000, paid: 5000, date: '2026-10-05', month: 'October 2026', status: 'paid' },
-        { id: 'f9', studentId: 's3', amount: 4500, paid: 4500, date: '2026-10-10', month: 'October 2026', status: 'paid' }
-      ]);
-
-      // ---- Accounts (daily) ----
-      let accounts = loadData(LS_KEYS.accounts, [
-        { id: 'a1', type: 'income', amount: 15000, category: 'Fees', description: 'November fee collection (partial)', date: '2026-11-18' },
-        { id: 'a2', type: 'expense', amount: 12000, category: 'Salaries', description: 'Teacher salary advance', date: '2026-11-17' },
-        { id: 'a3', type: 'income', amount: 5500, category: 'Admission', description: 'New admission (Sara)', date: '2026-11-16' },
-        { id: 'a4', type: 'expense', amount: 8000, category: 'Utilities', description: 'Electricity bill', date: '2026-11-15' },
-        { id: 'a5', type: 'income', amount: 6000, category: 'Fees', description: 'Class 8 fee', date: '2026-11-19' }
-      ]);
-
-      // ---- Exams & Marks ----
-      let exams = loadData(LS_KEYS.exams, [
-        { id: 'e1', studentId: 's1', examName: 'Mid Term 2026', subject: 'Mathematics', totalMarks: 100, obtainedMarks: 85, date: '2026-11-10' },
-        { id: 'e2', studentId: 's1', examName: 'Mid Term 2026', subject: 'English', totalMarks: 100, obtainedMarks: 78, date: '2026-11-11' },
-        { id: 'e3', studentId: 's2', examName: 'Mid Term 2026', subject: 'Mathematics', totalMarks: 100, obtainedMarks: 92, date: '2026-11-10' },
-        { id: 'e4', studentId: 's2', examName: 'Mid Term 2026', subject: 'English', totalMarks: 100, obtainedMarks: 88, date: '2026-11-11' },
-        { id: 'e5', studentId: 's4', examName: 'Mid Term 2026', subject: 'Science', totalMarks: 100, obtainedMarks: 95, date: '2026-11-12' },
-        { id: 'e6', studentId: 's5', examName: 'Mid Term 2026', subject: 'Physics', totalMarks: 100, obtainedMarks: 74, date: '2026-11-13' }
-      ]);
-
-      // ---- Marketing templates (USP demo) ----
-      let marketingTemplates = loadData(LS_KEYS.marketing, [
-        { id: 'm1', event: 'Science Fair 2026', whatsapp: '🌟 Science Fair 2026 at our school! Our young scientists amazed everyone with creative projects. Proud of you all! 🧪✨ #EduManage', facebook: '🔬 Our annual Science Fair was a huge success! Students from Class 1-10 showcased innovative projects. Admissions open — join our family! 📞 Call now.', video: '15s Reel: Highlights of Science Fair — happy faces, experiments, and proud parents. Script: "Innovation starts here — at [School Name]."', hashtags: '#ScienceFair #PakistanSchools #STEM' },
-        { id: 'm2', event: 'Independence Day 2026', whatsapp: '🇵🇰 Happy Independence Day! May we raise our children with the spirit of freedom and responsibility. Jashn-e-Azadi Mubarak! 💚', facebook: '🇵🇰 Celebrating 14th August with zeal and enthusiasm. Our students performed national songs. Enroll now for quality education!', video: '30s: Flag hoisting, national anthem, student speeches. Script: "Proud to be Pakistani — building future leaders."', hashtags: '#IndependenceDay #PakistanZindabad #Education' }
-      ]);
-
-      function saveAll() {
-        localStorage.setItem(LS_KEYS.students, JSON.stringify(students));
-        localStorage.setItem(LS_KEYS.staff, JSON.stringify(staff));
-        localStorage.setItem(LS_KEYS.attendance, JSON.stringify(attendance));
-        localStorage.setItem(LS_KEYS.staffAttendance, JSON.stringify(staffAttendance));
-        localStorage.setItem(LS_KEYS.fees, JSON.stringify(fees));
-        localStorage.setItem(LS_KEYS.accounts, JSON.stringify(accounts));
-        localStorage.setItem(LS_KEYS.exams, JSON.stringify(exams));
-        localStorage.setItem(LS_KEYS.marketing, JSON.stringify(marketingTemplates));
-      }
-
-      // ---------- UTILS ----------
-      function toast(msg, type = 'success') {
-        const container = document.getElementById('toastContainer');
-        const el = document.createElement('div');
-        el.className = `toast px-5 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-3 ${type === 'success' ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}`;
-        el.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
-        container.appendChild(el);
-        setTimeout(() => el.remove(), 3000);
-      }
-
-      function formatPKR(amount) { return 'PKR ' + Number(amount).toLocaleString('en-PK'); }
-
-      let currentView = 'dashboard';
-
-      // ---------- RENDER FUNCTIONS ----------
-
-      function renderDashboard() {
-        const today = new Date().toISOString().split('T')[0];
-        const totalStudents = students.length;
-        const totalStaff = staff.length;
-        const todayAttendance = attendance.filter(a => a.date === today);
-        const presentCount = todayAttendance.filter(a => a.status === 'present').length;
-        const attendancePct = totalStudents ? Math.round((presentCount / totalStudents) * 100) : 0;
-        const pendingFees = fees.filter(f => f.status !== 'paid').reduce((sum, f) => sum + (f.amount - f.paid), 0);
-        const todayCollection = fees.filter(f => f.date === today).reduce((sum, f) => sum + f.paid, 0);
-        const monthlyCollection = fees.filter(f => f.date?.slice(0,7) === today.slice(0,7)).reduce((sum, f) => sum + f.paid, 0);
-
-        const recent = [
-          ...fees.slice(-2).map(f => { const s = students.find(x => x.id === f.studentId); return `Fee ${f.status} — ${s?.name || 'student'}`; }),
-          ...accounts.slice(-2).map(a => `${a.type === 'income' ? 'Income' : 'Expense'} ${formatPKR(a.amount)} (${a.category})`)
-        ].slice(0, 5);
-
-        return `
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 flex items-center justify-between">
-              <div><p class="text-sm text-gray-500 dark:text-gray-400">Total Students</p><p class="text-3xl font-bold text-emerald-700 dark:text-emerald-300">${totalStudents}</p></div>
-              <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600 text-xl"><i class="fas fa-user-graduate"></i></div>
-            </div>
-            <div class="bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 flex items-center justify-between">
-              <div><p class="text-sm text-gray-500 dark:text-gray-400">Total Staff</p><p class="text-3xl font-bold text-blue-700 dark:text-blue-300">${totalStaff}</p></div>
-              <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 text-xl"><i class="fas fa-chalkboard-teacher"></i></div>
-            </div>
-            <div class="bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 flex items-center justify-between">
-              <div><p class="text-sm text-gray-500 dark:text-gray-400">Today's Attendance</p><p class="text-3xl font-bold text-indigo-700 dark:text-indigo-300">${attendancePct}%</p></div>
-              <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 text-xl"><i class="fas fa-check-circle"></i></div>
-            </div>
-            <div class="bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 flex items-center justify-between">
-              <div><p class="text-sm text-gray-500 dark:text-gray-400">Pending Fees</p><p class="text-3xl font-bold text-rose-700 dark:text-rose-300">${formatPKR(pendingFees)}</p></div>
-              <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center text-rose-600 text-xl"><i class="fas fa-exclamation-triangle"></i></div>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div class="bg-white dark:bg-[#132222] p-6 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <h3 class="font-semibold text-lg mb-3 flex items-center gap-2"><i class="fas fa-chart-line text-emerald-600"></i>Today & Monthly</h3>
-              <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-800"><span class="text-gray-600 dark:text-gray-400">Today's Collection</span><span class="font-bold text-emerald-700 dark:text-emerald-300">${formatPKR(todayCollection)}</span></div>
-              <div class="flex justify-between py-2"><span class="text-gray-600 dark:text-gray-400">Monthly Collection</span><span class="font-bold text-emerald-700 dark:text-emerald-300">${formatPKR(monthlyCollection)}</span></div>
-              <div class="mt-4 h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width:${Math.min(100, (monthlyCollection/100000)*100)}%"></div></div>
-            </div>
-            <div class="bg-white dark:bg-[#132222] p-6 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <h3 class="font-semibold text-lg mb-3 flex items-center gap-2"><i class="fas fa-clock text-amber-500"></i>Recent Activity</h3>
-              <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                ${recent.map(r => `<li class="flex items-center gap-2"><i class="fas fa-circle text-[6px] text-emerald-500"></i>${r}</li>`).join('') || '<li class="text-gray-400">No recent activity</li>'}
-              </ul>
-            </div>
-          </div>
-          <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-5 text-white flex flex-wrap justify-between items-center card-shadow">
-            <div><h3 class="font-bold text-lg">Demo Flow — Step by Step</h3><p class="text-blue-100 text-sm">Follow the guided steps to demo the complete system to a client.</p></div>
-            <button onclick="document.querySelector('.sidebar-item[data-view=\\'flow\\']').click()" class="bg-white/20 hover:bg-white/30 px-5 py-2 rounded-xl text-sm font-medium transition">Open Demo Guide <i class="fas fa-arrow-right ml-1"></i></button>
-          </div>
-        `;
-      }
-
-      function renderStudents() {
-        return `
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold">All Students (${students.length})</h3>
-            <button onclick="addStudentPrompt()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow flex items-center gap-2"><i class="fas fa-plus"></i> Add Student</button>
-          </div>
-          <div class="bg-white dark:bg-[#132222] rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="bg-gray-50 dark:bg-[#0f1f1f] text-left text-gray-600 dark:text-gray-300">
-                <tr><th class="p-4">Name</th><th>Class</th><th>Roll</th><th>Parent</th><th>Phone</th><th>Admission</th><th>Fee Status</th><th>Actions</th></tr>
-              </thead>
-              <tbody>
-                ${students.map(s => {
-                  const cls = classList.find(c => c.id === s.classId)?.name || s.classId;
-                  const feeColor = s.feeStatus === 'paid' ? 'bg-emerald-100 text-emerald-800' : s.feeStatus === 'partial' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800';
-                  return `<tr class="border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#1e2f2f]">
-                    <td class="p-4 font-medium">${s.name}</td><td>${cls} ${s.section || ''}</td><td>${s.roll}</td><td>${s.parent}</td><td>${s.phone}</td><td>${s.admissionDate}</td>
-                    <td><span class="px-2 py-1 rounded-full text-xs font-medium ${feeColor}">${s.feeStatus}</span></td>
-                    <td class="flex gap-2"><button onclick="deleteStudent('${s.id}')" class="text-rose-500 hover:text-rose-700"><i class="fas fa-trash-alt"></i></button></td>
-                  </tr>`;
-                }).join('') || '<tr><td colspan="8" class="p-8 text-center text-gray-400">No students yet. Add your first student.</td></tr>'}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-
-      function renderStaff() {
-        const today = new Date().toISOString().split('T')[0];
-        return `
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold">Staff & Teachers (${staff.length})</h3>
-            <button onclick="addStaffPrompt()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow flex items-center gap-2"><i class="fas fa-plus"></i> Add Staff</button>
-          </div>
-          <div class="bg-white dark:bg-[#132222] rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="bg-gray-50 dark:bg-[#0f1f1f] text-left text-gray-600 dark:text-gray-300">
-                <tr><th class="p-4">Name</th><th>Designation</th><th>Subject</th><th>Salary</th><th>Joining</th><th>Contact</th><th>Today</th><th>Actions</th></tr>
-              </thead>
-              <tbody>
-                ${staff.map(t => {
-                  const rec = staffAttendance.find(a => a.date === today && a.staffId === t.id);
-                  const status = rec ? rec.status : '—';
-                  const statusColor = status === 'present' ? 'bg-emerald-100 text-emerald-800' : status === 'absent' ? 'bg-rose-100 text-rose-800' : 'bg-gray-100 text-gray-500';
-                  return `<tr class="border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#1e2f2f]">
-                    <td class="p-4 font-medium">${t.name}</td><td>${t.designation}</td><td>${t.subject}</td><td>${formatPKR(t.salary)}</td><td>${t.joiningDate}</td><td>${t.contact}</td>
-                    <td><span class="px-2 py-1 rounded-full text-xs ${statusColor}">${status}</span></td>
-                    <td><button onclick="deleteStaff('${t.id}')" class="text-rose-500 hover:text-rose-700"><i class="fas fa-trash-alt"></i></button></td>
-                  </tr>`;
-                }).join('') || '<tr><td colspan="8" class="p-8 text-center text-gray-400">No staff members.</td></tr>'}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-
-      function renderAttendance() {
-        const today = new Date().toISOString().split('T')[0];
-        const present = attendance.filter(a => a.date === today && a.status === 'present').length;
-        const absent = attendance.filter(a => a.date === today && a.status === 'absent').length;
-        return `
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold">Mark Attendance — ${today}</h3>
-            <div class="flex gap-3 text-sm"><span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full"><i class="fas fa-check-circle"></i> Present: ${present}</span><span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full"><i class="fas fa-times-circle"></i> Absent: ${absent}</span></div>
-          </div>
-          <div class="bg-white dark:bg-[#132222] rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 p-5">
-            ${students.map(s => {
-              const rec = attendance.find(a => a.date === today && a.studentId === s.id);
-              const status = rec ? rec.status : null;
-              const cls = classList.find(c => c.id === s.classId)?.name || s.classId;
-              return `<div class="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800 last:border-0">
-                <div><span class="font-medium">${s.name}</span><span class="text-xs text-gray-400 ml-2">${cls} · Roll ${s.roll}</span></div>
-                <div class="flex gap-2">
-                  <button onclick="markAttendance('${s.id}','present')" class="px-3 py-1 rounded-lg text-xs font-medium ${status === 'present' ? 'bg-emerald-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600'}">Present</button>
-                  <button onclick="markAttendance('${s.id}','absent')" class="px-3 py-1 rounded-lg text-xs font-medium ${status === 'absent' ? 'bg-rose-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600'}">Absent</button>
-                </div>
-              </div>`;
-            }).join('') || '<p class="text-gray-400 text-center py-6">No students to mark attendance.</p>'}
-          </div>
-          <div class="bg-white dark:bg-[#132222] rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 p-5 mt-5">
-            <h4 class="font-semibold mb-3 flex items-center gap-2"><i class="fas fa-chalkboard-teacher text-amber-500"></i> Staff Attendance (Today)</h4>
-            ${staff.map(t => {
-              const rec = staffAttendance.find(a => a.date === today && a.staffId === t.id);
-              const status = rec ? rec.status : null;
-              return `<div class="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
-                <span class="text-sm font-medium">${t.name} <span class="text-xs text-gray-400">(${t.designation})</span></span>
-                <div class="flex gap-2">
-                  <button onclick="markStaffAttendance('${t.id}','present')" class="px-3 py-1 rounded-lg text-xs font-medium ${status === 'present' ? 'bg-emerald-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600'}">Present</button>
-                  <button onclick="markStaffAttendance('${t.id}','absent')" class="px-3 py-1 rounded-lg text-xs font-medium ${status === 'absent' ? 'bg-rose-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600'}">Absent</button>
-                </div>
-              </div>`;
-            }).join('') || '<p class="text-gray-400 text-center py-4">No staff to mark.</p>'}
-          </div>
-        `;
-      }
-
-      function renderFees() {
-        const today = new Date().toISOString().split('T')[0];
-        return `
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold">Fee Collection & Invoices</h3>
-            <button onclick="collectFeePrompt()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow flex items-center gap-2"><i class="fas fa-hand-holding-usd"></i> Collect Fee</button>
-          </div>
-          <div class="bg-white dark:bg-[#132222] rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="bg-gray-50 dark:bg-[#0f1f1f]"><tr><th class="p-4">Student</th><th>Amount</th><th>Paid</th><th>Balance</th><th>Status</th><th>Month</th><th>Invoice</th></tr></thead>
-              <tbody>
-                ${fees.slice().reverse().map(f => {
-                  const student = students.find(s => s.id === f.studentId);
-                  const balance = f.amount - f.paid;
-                  return `<tr class="border-t border-gray-100 dark:border-gray-800">
-                    <td class="p-4">${student?.name || 'Unknown'}</td><td>${formatPKR(f.amount)}</td><td>${formatPKR(f.paid)}</td><td class="${balance > 0 ? 'text-rose-600 font-medium' : 'text-emerald-600'}">${formatPKR(balance)}</td>
-                    <td><span class="px-2 py-1 rounded-full text-xs ${f.status === 'paid' ? 'bg-emerald-100 text-emerald-800' : f.status === 'partial' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'}">${f.status}</span></td>
-                    <td>${f.month}</td>
-                    <td><button onclick="printInvoice('${f.id}')" class="text-emerald-600 hover:text-emerald-800"><i class="fas fa-print"></i> Print</button></td>
-                  </tr>`;
-                }).join('') || '<tr><td colspan="7" class="p-8 text-center text-gray-400">No fee records.</td></tr>'}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-
-      function renderAccounts() {
-        const totalIncome = accounts.filter(a => a.type === 'income').reduce((s, a) => s + a.amount, 0);
-        const totalExpense = accounts.filter(a => a.type === 'expense').reduce((s, a) => s + a.amount, 0);
-        return `
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold">Daily Accounts / Expense Tracker</h3>
-            <button onclick="addAccountPrompt()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow flex items-center gap-2"><i class="fas fa-plus"></i> Add Entry</button>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-            <div class="bg-white dark:bg-[#132222] p-4 rounded-xl card-shadow border border-gray-100 dark:border-gray-800"><p class="text-sm text-gray-500">Total Income</p><p class="text-2xl font-bold text-emerald-600">${formatPKR(totalIncome)}</p></div>
-            <div class="bg-white dark:bg-[#132222] p-4 rounded-xl card-shadow border border-gray-100 dark:border-gray-800"><p class="text-sm text-gray-500">Total Expense</p><p class="text-2xl font-bold text-rose-600">${formatPKR(totalExpense)}</p></div>
-            <div class="bg-white dark:bg-[#132222] p-4 rounded-xl card-shadow border border-gray-100 dark:border-gray-800"><p class="text-sm text-gray-500">Net Balance</p><p class="text-2xl font-bold ${totalIncome - totalExpense >= 0 ? 'text-emerald-600' : 'text-rose-600'}">${formatPKR(totalIncome - totalExpense)}</p></div>
-          </div>
-          <div class="bg-white dark:bg-[#132222] rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="bg-gray-50 dark:bg-[#0f1f1f]"><tr><th class="p-4">Type</th><th>Category</th><th>Amount</th><th>Description</th><th>Date</th></tr></thead>
-              <tbody>
-                ${accounts.slice().reverse().map(a => `<tr class="border-t border-gray-100 dark:border-gray-800">
-                  <td class="p-4"><span class="capitalize ${a.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}">${a.type}</span></td>
-                  <td>${a.category}</td><td>${formatPKR(a.amount)}</td><td>${a.description}</td><td>${a.date}</td>
-                </tr>`).join('') || '<tr><td colspan="5" class="p-8 text-center text-gray-400">No transactions yet.</td></tr>'}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-
-      function renderClasses() {
-        return `
-          <h3 class="text-lg font-semibold mb-4">Classes & Sections (Nursery to Intermediate)</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            ${classList.map(c => {
-              const count = students.filter(s => s.classId === c.id).length;
-              return `<div class="bg-white dark:bg-[#132222] p-4 rounded-xl card-shadow border border-gray-100 dark:border-gray-800">
-                <div class="flex items-center justify-between"><span class="font-medium">${c.name}</span><span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full">${count} students</span></div>
-                <div class="mt-2 text-sm text-gray-500">Sections: ${c.sections.join(', ')}</div>
-              </div>`;
-            }).join('')}
-          </div>
-        `;
-      }
-
-      function renderExams() {
-        const studentExams = students.map(s => {
-          const marks = exams.filter(e => e.studentId === s.id);
-          if (!marks.length) return null;
-          const avg = Math.round(marks.reduce((sum, m) => sum + (m.obtainedMarks / m.totalMarks) * 100, 0) / marks.length);
-          return { student: s, marks, avg };
-        }).filter(Boolean);
-
-        return `
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold">Exams & Marks</h3>
-            <button onclick="addExamPrompt()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow flex items-center gap-2"><i class="fas fa-plus"></i> Add Marks</button>
-          </div>
-          <div class="space-y-4">
-            ${studentExams.map(se => `
-              <div class="bg-white dark:bg-[#132222] rounded-2xl card-shadow border border-gray-100 dark:border-gray-800 p-4">
-                <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-2 mb-3">
-                  <span class="font-semibold">${se.student.name}</span>
-                  <span class="text-sm bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Avg: ${se.avg}%</span>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-                  ${se.marks.map(m => `<div class="flex justify-between bg-gray-50 dark:bg-[#0f1f1f] p-2 rounded-lg"><span>${m.examName} — ${m.subject}</span><span class="font-medium ${m.obtainedMarks/m.totalMarks >= 0.4 ? 'text-emerald-600' : 'text-rose-600'}">${m.obtainedMarks}/${m.totalMarks}</span></div>`).join('')}
-                </div>
-              </div>
-            `).join('') || '<div class="bg-white dark:bg-[#132222] rounded-2xl card-shadow p-8 text-center text-gray-400">No exam records yet.</div>'}
-          </div>
-        `;
-      }
-
-      function renderMarketing() {
-        return `
-          <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-6 text-white mb-6 shadow-lg">
-            <h2 class="text-2xl font-bold flex items-center gap-3"><i class="fas fa-bullhorn"></i> Marketing Toolkit — Daily Content Generator</h2>
-            <p class="text-purple-100 mt-1">Turn today's school activity into ready-to-post content for WhatsApp, Facebook, Instagram, and Reels.</p>
-          </div>
-          <div class="bg-white dark:bg-[#132222] rounded-2xl card-shadow p-6 border border-gray-100 dark:border-gray-800">
-            <label class="block text-sm font-medium mb-2">Today's School Activity / News / Event</label>
-            <div class="flex gap-3">
-              <input id="marketingInput" type="text" placeholder="e.g. Science fair held today, Admissions open, Sports day..." class="flex-1 border border-gray-300 dark:border-gray-700 rounded-xl px-4 py-3 bg-transparent focus:ring-2 focus:ring-purple-400 outline-none">
-              <button onclick="generateMarketing()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-medium shadow flex items-center gap-2"><i class="fas fa-magic"></i> Generate</button>
-            </div>
-            <div id="marketingResult" class="mt-6 space-y-4">
-              ${marketingTemplates.slice().reverse().map(m => `
-                <div class="border border-purple-100 dark:border-purple-900 rounded-xl p-4 bg-purple-50/30 dark:bg-purple-950/20">
-                  <p class="text-xs uppercase tracking-wider text-purple-600 font-semibold mb-2">${m.event}</p>
-                  <div class="space-y-3">
-                    <div><span class="font-medium text-sm flex items-center gap-1"><i class="fab fa-whatsapp text-green-600"></i> WhatsApp Status:</span><p class="text-sm mt-1 p-2 bg-white dark:bg-gray-900 rounded-lg">${m.whatsapp}</p></div>
-                    <div><span class="font-medium text-sm flex items-center gap-1"><i class="fab fa-facebook text-blue-600"></i> Facebook / Instagram:</span><p class="text-sm mt-1 p-2 bg-white dark:bg-gray-900 rounded-lg">${m.facebook}</p></div>
-                    <div><span class="font-medium text-sm flex items-center gap-1"><i class="fab fa-tiktok"></i> Video Idea + Script:</span><p class="text-sm mt-1 p-2 bg-white dark:bg-gray-900 rounded-lg">${m.video}</p></div>
-                    <div><span class="font-medium text-sm">#️⃣ Hashtags:</span> <span class="text-sm text-purple-700 dark:text-purple-300">${m.hashtags}</span></div>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      }
-
-      // ---------- DEMO FLOW (STEP-BY-STEP GUIDE) ----------
-      function renderFlow() {
-        return `
-          <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 text-white mb-6 shadow-lg">
-            <h2 class="text-2xl font-bold flex items-center gap-3"><i class="fas fa-route"></i> Complete Demo Flow — Impress Your Client</h2>
-            <p class="text-blue-100 mt-1">Follow these steps in order. Each step opens the relevant module with demo data pre-filled.</p>
-          </div>
-          <div class="space-y-4">
-            <!-- Step 1 -->
-            <div class="flow-highlight bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <div class="flex items-start gap-4">
-                <span class="step-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg">Student Admission — From Admission Date to Fee Status</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Show the Students module. Add a new student with name, class, parent, phone, admission date. The fee status starts as "unpaid".</p>
-                  <div class="flex flex-wrap gap-2 mt-3">
-                    <button onclick="document.querySelector('.sidebar-item[data-view=\\'students\\']').click()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-user-plus mr-1"></i> Open Students</button>
-                    <button onclick="addStudentPrompt()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-plus mr-1"></i> Quick Add Student</button>
-                  </div>
-                  <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-2"><i class="fas fa-check-circle"></i> Demo data: 6 students already seeded with admission dates (April 2025).</p>
-                </div>
-              </div>
-            </div>
-            <!-- Step 2 -->
-            <div class="flow-highlight bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <div class="flex items-start gap-4">
-                <span class="step-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg">Class & Section Management</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Show the full class list from Nursery to Intermediate. Each class has sections and student counts.</p>
-                  <button onclick="document.querySelector('.sidebar-item[data-view=\\'classes\\']').click()" class="mt-3 bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-layer-group mr-1"></i> Open Classes</button>
-                </div>
-              </div>
-            </div>
-            <!-- Step 3 -->
-            <div class="flow-highlight bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <div class="flex items-start gap-4">
-                <span class="step-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg">Daily Student Attendance — Class-Wise Marking</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Mark attendance for today. Show present/absent toggles and the live percentage on the dashboard.</p>
-                  <button onclick="document.querySelector('.sidebar-item[data-view=\\'attendance\\']').click()" class="mt-3 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-check-circle mr-1"></i> Open Attendance</button>
-                  <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-2"><i class="fas fa-check-circle"></i> 5 days of attendance history already seeded for demo.</p>
-                </div>
-              </div>
-            </div>
-            <!-- Step 4 -->
-            <div class="flow-highlight bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <div class="flex items-start gap-4">
-                <span class="step-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">4</span>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg">Staff & Teacher Management — Salary, Attendance, Contact</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Show staff list with designations, salary, joining dates, and today's attendance. Add new staff if needed.</p>
-                  <button onclick="document.querySelector('.sidebar-item[data-view=\\'staff\\']').click()" class="mt-3 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-chalkboard-teacher mr-1"></i> Open Staff</button>
-                </div>
-              </div>
-            </div>
-            <!-- Step 5 -->
-            <div class="flow-highlight bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <div class="flex items-start gap-4">
-                <span class="step-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">5</span>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg">Monthly Fee Voucher & Collection — Partial Payments, Invoices</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Show fee records with paid/partial/unpaid status. Collect a fee using the "Collect Fee" button. Print a professional invoice.</p>
-                  <div class="flex flex-wrap gap-2 mt-3">
-                    <button onclick="document.querySelector('.sidebar-item[data-view=\\'fees\\']').click()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-file-invoice-dollar mr-1"></i> Open Fees</button>
-                    <button onclick="collectFeePrompt()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-hand-holding-usd mr-1"></i> Quick Collect Fee</button>
-                  </div>
-                  <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-2"><i class="fas fa-check-circle"></i> Demo: 9 fee records across Oct & Nov 2026. Print invoice works!</p>
-                </div>
-              </div>
-            </div>
-            <!-- Step 6 -->
-            <div class="flow-highlight bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <div class="flex items-start gap-4">
-                <span class="step-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">6</span>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg">Exams & Test Marks — Subject-Wise Performance</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Show exam records with subject-wise marks and average percentage per student. Add new marks to demonstrate.</p>
-                  <button onclick="document.querySelector('.sidebar-item[data-view=\\'exams\\']').click()" class="mt-3 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-file-signature mr-1"></i> Open Exams</button>
-                  <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-2"><i class="fas fa-check-circle"></i> 6 exam records seeded for Mid Term 2026.</p>
-                </div>
-              </div>
-            </div>
-            <!-- Step 7 -->
-            <div class="flow-highlight bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <div class="flex items-start gap-4">
-                <span class="step-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">7</span>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg">Daily Accounts / Expense Tracker — Cash Flow</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Show income & expense entries. Highlight the total income, expense, and net balance. Add a new expense entry.</p>
-                  <button onclick="document.querySelector('.sidebar-item[data-view=\\'accounts\\']').click()" class="mt-3 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-coins mr-1"></i> Open Accounts</button>
-                </div>
-              </div>
-            </div>
-            <!-- Step 8 (USP) -->
-            <div class="flow-highlight bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border-2 border-purple-300 dark:border-purple-800">
-              <div class="flex items-start gap-4">
-                <span class="step-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 bg-gradient-to-r from-purple-600 to-pink-600">8</span>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-bullhorn text-purple-600"></i> Marketing Toolkit — The Unique Selling Point</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Generate ready-to-post content for WhatsApp, Facebook, Instagram, and Reels from any school event. This is the feature that closes the deal!</p>
-                  <button onclick="document.querySelector('.sidebar-item[data-view=\\'marketing\\']').click()" class="mt-3 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-magic mr-1"></i> Open Marketing Toolkit</button>
-                  <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-2"><i class="fas fa-check-circle"></i> Try: Type "Annual Sports Day" and click Generate to see instant content.</p>
-                </div>
-              </div>
-            </div>
-            <!-- Step 9 -->
-            <div class="flow-highlight bg-white dark:bg-[#132222] p-5 rounded-2xl card-shadow border border-gray-100 dark:border-gray-800">
-              <div class="flex items-start gap-4">
-                <span class="step-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">9</span>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg">Dashboard — Full Overview (Final Impression)</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">End the demo on the Dashboard. Show all live stats: total students, staff, attendance %, pending fees, today's collection, monthly collection, and recent activity.</p>
-                  <button onclick="document.querySelector('.sidebar-item[data-view=\\'dashboard\\']').click()" class="mt-3 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-chart-pie mr-1"></i> Back to Dashboard</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-5 mt-6">
-            <p class="text-sm text-emerald-800 dark:text-emerald-300"><i class="fas fa-lightbulb mr-2"></i> <strong>Pro tip:</strong> All data is saved in localStorage. You can refresh the page and everything persists. Use the dark mode toggle to show the premium design. The invoice print works from the Fees module.</p>
-          </div>
-        `;
-      }
-
-      // ---------- GLOBAL FUNCTIONS ----------
-      window.addStudentPrompt = function() {
-        const name = prompt("Student full name:");
-        if (!name) return;
-        const classId = prompt("Class ID (nursery, prep, class1...inter2):", "class1");
-        const section = prompt("Section (A/B/C):", "A");
-        const roll = prompt("Roll number:", "1");
-        const parent = prompt("Parent name:");
-        const phone = prompt("Phone:");
-        const dob = prompt("Date of birth (YYYY-MM-DD):", "2015-01-01");
-        students.push({ id: 's' + Date.now(), name, classId: classId || 'class1', section: section || 'A', roll: roll || '1', parent: parent || '', phone: phone || '', address: '', admissionDate: new Date().toISOString().split('T')[0], feeStatus: 'unpaid', dob: dob || '' });
-        saveAll();
-        renderView('students');
-        toast('Student added successfully');
-      };
-
-      window.deleteStudent = function(id) {
-        if (!confirm('Delete this student?')) return;
-        students = students.filter(s => s.id !== id);
-        saveAll();
-        renderView('students');
-        toast('Student deleted');
-      };
-
-      window.addStaffPrompt = function() {
-        const name = prompt("Staff full name:");
-        if (!name) return;
-        const designation = prompt("Designation:", "Teacher");
-        const subject = prompt("Subject:", "General");
-        const salary = prompt("Salary (PKR):", "30000");
-        const contact = prompt("Contact:", "");
-        staff.push({ id: 't' + Date.now(), name, designation: designation || 'Teacher', subject: subject || 'General', salary: Number(salary) || 30000, joiningDate: new Date().toISOString().split('T')[0], contact: contact || '' });
-        saveAll();
-        renderView('staff');
-        toast('Staff added successfully');
-      };
-
-      window.deleteStaff = function(id) {
-        if (!confirm('Delete staff member?')) return;
-        staff = staff.filter(t => t.id !== id);
-        saveAll();
-        renderView('staff');
-        toast('Staff deleted');
-      };
-
-      window.markAttendance = function(studentId, status) {
-        const today = new Date().toISOString().split('T')[0];
-        const existing = attendance.find(a => a.date === today && a.studentId === studentId);
-        if (existing) existing.status = status;
-        else attendance.push({ date: today, studentId, status });
-        saveAll();
-        renderView('attendance');
-        toast('Attendance marked');
-      };
-
-      window.markStaffAttendance = function(staffId, status) {
-        const today = new Date().toISOString().split('T')[0];
-        const existing = staffAttendance.find(a => a.date === today && a.staffId === staffId);
-        if (existing) existing.status = status;
-        else staffAttendance.push({ date: today, staffId, status });
-        saveAll();
-        renderView('attendance');
-        toast('Staff attendance marked');
-      };
-
-      window.collectFeePrompt = function() {
-        if (!students.length) return toast('Add students first', 'error');
-        const studentList = students.map((s, i) => `${i+1}. ${s.name} (${s.id})`).join('\n');
-        const idx = prompt(`Select student number:\n${studentList}`, "1");
-        const student = students[parseInt(idx)-1];
-        if (!student) return toast('Invalid selection', 'error');
-        const amount = prompt("Total fee amount:", "5000");
-        const paid = prompt("Amount paid now:", amount);
-        const month = prompt("Fee month (e.g. November 2026):", new Date().toLocaleString('default', { month: 'long', year: 'numeric' }));
-        const newFee = {
-          id: 'f' + Date.now(),
-          studentId: student.id,
-          amount: Number(amount) || 0,
-          paid: Number(paid) || 0,
-          date: new Date().toISOString().split('T')[0],
-          month: month || new Date().toLocaleString('default', { month: 'long', year: 'numeric' }),
-          status: (Number(paid) >= Number(amount)) ? 'paid' : (Number(paid) > 0 ? 'partial' : 'unpaid')
-        };
-        fees.push(newFee);
-        student.feeStatus = newFee.status;
-        saveAll();
-        renderView('fees');
-        toast('Fee collected — invoice ready');
-      };
-
-      window.printInvoice = function(feeId) {
-        const fee = fees.find(f => f.id === feeId);
-        if (!fee) return;
-        const student = students.find(s => s.id === fee.studentId);
-        if (!student) return;
-        const win = window.open('', '_blank');
-        win.document.write(`
-          <html><head><title>Fee Invoice — ${student.name}</title><style>body{font-family:Inter,sans-serif;padding:40px;max-width:650px;margin:auto;} .header{display:flex;justify-content:space-between;border-bottom:3px solid #10b981;padding-bottom:10px;} .amount{font-size:26px;font-weight:bold;color:#10b981;} table{width:100%;margin-top:20px;border-collapse:collapse;} td,th{padding:10px;border-bottom:1px solid #eee;text-align:left;} .footer{margin-top:40px;font-size:12px;color:#888;text-align:center;}</style></head>
-          <body>
-            <div class="header"><div><h1 style="margin:0;color:#065f46;">EduManage Pakistan</h1><p style="margin:4px 0 0;">Fee Invoice / Voucher</p></div><div style="text-align:right;"><p><strong>Invoice #</strong> ${fee.id.toUpperCase()}</p><p><strong>Date:</strong> ${fee.date}</p></div></div>
-            <p><strong>Student:</strong> ${student.name}<br><strong>Class:</strong> ${classList.find(c=>c.id===student.classId)?.name || student.classId} ${student.section}<br><strong>Roll:</strong> ${student.roll}<br><strong>Parent:</strong> ${student.parent}</p>
-            <table><tr><th>Description</th><th>Amount</th></tr>
-            <tr><td>Tuition Fee — ${fee.month}</td><td>${formatPKR(fee.amount)}</td></tr>
-            <tr><td>Amount Paid</td><td>${formatPKR(fee.paid)}</td></tr>
-            <tr><td><strong>Balance Due</strong></td><td class="amount">${formatPKR(fee.amount - fee.paid)}</td></tr></table>
-            <p style="margin-top:30px;">Thank you for your payment. Please retain this invoice for your records.</p>
-            <div class="footer">Generated by EduManage Pakistan — Paperless School Management</div>
-          </body></html>
-        `);
-        win.print();
-      };
-
-      window.addAccountPrompt = function() {
-        const type = prompt("Type (income/expense):", "expense");
-        const amount = prompt("Amount (PKR):", "1000");
-        const category = prompt("Category (Salaries, Utilities, Maintenance, Marketing, Fees, Admission):", "Utilities");
-        const description = prompt("Description:", "");
-        accounts.push({ id: 'a' + Date.now(), type: type || 'expense', amount: Number(amount) || 0, category: category || 'General', description: description || '', date: new Date().toISOString().split('T')[0] });
-        saveAll();
-        renderView('accounts');
-        toast('Transaction added');
-      };
-
-      window.addExamPrompt = function() {
-        if (!students.length) return toast('Add students first', 'error');
-        const studentList = students.map((s, i) => `${i+1}. ${s.name}`).join('\n');
-        const idx = prompt(`Select student:\n${studentList}`, "1");
-        const student = students[parseInt(idx)-1];
-        if (!student) return toast('Invalid selection', 'error');
-        const examName = prompt("Exam name:", "Mid Term 2026");
-        const subject = prompt("Subject:", "Mathematics");
-        const totalMarks = prompt("Total marks:", "100");
-        const obtainedMarks = prompt("Obtained marks:", "75");
-        exams.push({ id: 'e' + Date.now(), studentId: student.id, examName: examName || 'Exam', subject: subject || 'Subject', totalMarks: Number(totalMarks) || 100, obtainedMarks: Number(obtainedMarks) || 0, date: new Date().toISOString().split('T')[0] });
-        saveAll();
-        renderView('exams');
-        toast('Marks added');
-      };
-
-      window.generateMarketing = function() {
-        const input = document.getElementById('marketingInput').value.trim();
-        if (!input) return toast('Please enter an activity', 'error');
-        const event = input;
-        const generated = {
-          id: 'm' + Date.now(),
-          event,
-          whatsapp: `🌟 ${event} at our school! Alhamdulillah, our students continue to shine. Admissions open — join the family! 📞`,
-          facebook: `🎉 ${event} — a proud moment for our school community! Our students participated with great enthusiasm. Enroll now for quality education. #EduManage`,
-          video: `15s Reel idea: Show highlights of ${event}. Script: "This is how we nurture future leaders — at our school."`,
-          hashtags: `#${event.replace(/\s+/g,'')} #PakistanSchools #QualityEducation #AdmissionsOpen`
-        };
-        marketingTemplates.push(generated);
-        saveAll();
-        renderView('marketing');
-        toast('Marketing content generated — ready to post!');
-      };
-
-      // ---------- NAVIGATION ----------
-      function renderView(view) {
-        currentView = view;
-        const container = document.getElementById('appContent');
-        const title = document.getElementById('viewTitle');
-        const views = {
-          dashboard: renderDashboard,
-          students: renderStudents,
-          staff: renderStaff,
-          attendance: renderAttendance,
-          fees: renderFees,
-          accounts: renderAccounts,
-          classes: renderClasses,
-          exams: renderExams,
-          marketing: renderMarketing,
-          flow: renderFlow
-        };
-        if (views[view]) container.innerHTML = views[view]();
-        else container.innerHTML = '<p>View not found</p>';
-        const titleMap = { flow: 'Demo Flow Guide' };
-        title.textContent = titleMap[view] || view.charAt(0).toUpperCase() + view.slice(1);
-        document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-        document.querySelector(`.sidebar-item[data-view="${view}"]`)?.classList.add('active');
-      }
-
-      // ---------- INIT ----------
-      document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric' });
-
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-          item.addEventListener('click', function(e) {
-            e.preventDefault();
-            renderView(this.dataset.view);
-          });
-        });
-
-        const toggle = document.getElementById('darkModeToggle');
-        if (localStorage.getItem('edu_dark') === 'true') document.documentElement.classList.add('dark');
-        toggle.addEventListener('click', () => {
-          document.documentElement.classList.toggle('dark');
-          localStorage.setItem('edu_dark', document.documentElement.classList.contains('dark'));
-        });
-
-        renderView('dashboard');
-        saveAll();
-      });
-
-    })();
-  </script>
-</body>
-</html>
+/* ---------- init ---------- */
+D=JSON.parse(localStorage.getItem(K)||'null');if(!D){seed();save()}
+if(localStorage.getItem('edupak_dk'))document.documentElement.classList.add('dark');
+render();
+</script></body></html>
